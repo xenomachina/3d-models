@@ -41,7 +41,6 @@ module stand(
     leg_height,
     leg_thickness,
     leg_spacing,
-    base_length,
     base_height
 ){
     module leg(width, height, thickness) {
@@ -49,10 +48,12 @@ module stand(
     }
 
     module base(width, length, height) {
-        translate([0, (ps2_length - base_length) / 2 + ps2_ridge_thickness, -(height * 2)]) cube(size=[width, length, height], center=true);
+        translate([0, (ps2_length - base_length) / 2 + ps2_ridge_thickness, -(height * 2)])
+            cube(size=[width, length, height], center=true);
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
+    base_length = (ps2_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness;
 
     difference() {
         union() {
@@ -78,6 +79,5 @@ stand(
   100,                                  // leg_height
   ps2_top_thickness,                    // leg_thickness
   ps2_length - 45 - ps2_top_thickness,  // leg_spacing
-  ps2_length - 20,                      // base_length
   20                                    // base_height
 );
