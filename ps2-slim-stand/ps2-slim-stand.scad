@@ -48,7 +48,7 @@ module stand(
     }
 
     module base(width, length, height) {
-        translate([0, 0, -(height * 2)]) cube(size=[width, length, height], center=true);
+        translate([0, (ps2_length - base_length) / 2 + ps2_ridge_thickness, -(height * 2)]) cube(size=[width, length, height], center=true);
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
