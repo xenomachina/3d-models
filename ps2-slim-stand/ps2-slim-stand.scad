@@ -71,11 +71,13 @@ module stand(
     }
 }
 
+shade = .5;
+color([shade,shade,shade])
 stand(
-  60,                   // leg_width
-  100,                  // leg_height
-  ps2_top_thickness,    // leg_thickness
+  60,                                   // leg_width
+  100,                                  // leg_height
+  ps2_top_thickness,                    // leg_thickness
   ps2_length - 45 - ps2_top_thickness,  // leg_spacing
-  ps2_length - 20,      // base_length
-  20                    // base_height
+  ps2_length - 20,                      // base_length
+  20                                    // base_height
 );
