@@ -40,6 +40,7 @@ module stand(
     leg_width,
     leg_height,
     leg_thickness,
+    leg_spacing,
     base_length,
     base_height
 ){
@@ -56,10 +57,10 @@ module stand(
     difference() {
         union() {
             // back leg
-            translate([0, base_length / 2 - leg_thickness, 0]) leg(leg_width, leg_height, leg_thickness);
+            translate([0, leg_spacing / 2, 0]) leg(leg_width, leg_height, leg_thickness);
 
             // front leg
-            translate([0, -(base_length / 2 - leg_thickness), 0]) leg(leg_width, leg_height, leg_thickness);
+            translate([0, -(leg_spacing / 2), 0]) leg(leg_width, leg_height, leg_thickness);
 
             base(base_width, base_length, base_height);
         }
@@ -74,6 +75,7 @@ stand(
   60,                   // leg_width
   100,                  // leg_height
   ps2_top_thickness,    // leg_thickness
+  ps2_length - 45 - ps2_top_thickness,  // leg_spacing
   ps2_length - 20,      // base_length
   20                    // base_height
 );
