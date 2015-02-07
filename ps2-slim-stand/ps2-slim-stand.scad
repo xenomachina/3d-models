@@ -44,12 +44,13 @@ module stand(
     base_height
 ){
     module leg(width, height, thickness) {
+        translate([0, 0, height / 2])
         cube(size=[width * 2 + ps2_thickness, thickness, height], center=true);
     }
 
     module base(width, length, height) {
-        translate([0, (ps2_length - base_length) / 2 + ps2_ridge_thickness, -(height * 2)])
-            cube(size=[width, length, height], center=true);
+        translate([-width / 2, -(leg_spacing + leg_thickness) / 2, -height])
+            cube(size=[width, length, height + ps2_ridge_height]);
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
@@ -58,16 +59,16 @@ module stand(
     difference() {
         union() {
             // back leg
-            translate([0, leg_spacing / 2, 0]) leg(leg_width, leg_height, leg_thickness);
+            translate([0, leg_spacing / 2, -base_height]) leg(leg_width, leg_height, leg_thickness);
 
             // front leg
-            translate([0, -(leg_spacing / 2), 0]) leg(leg_width, leg_height, leg_thickness);
+            translate([0, -(leg_spacing / 2), -base_height]) leg(leg_width, leg_height, leg_thickness);
 
             base(base_width, base_length, base_height);
         }
 
         // slot for PS2 to fit into
-        translate([0, 0, base_height - ps2_ridge_height])
+        translate([0, 0, leg_height / 2])
             cube(size=[ps2_thickness, ps2_length, leg_height], center=true);
     }
 }
