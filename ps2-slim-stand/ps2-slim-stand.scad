@@ -30,7 +30,8 @@
  * Entertainment Inc. The author of this file has no affiliation with Sony
  * Computer Entertainment Inc.
  */
-e = 0.04;
+e = 0.04; // epsilon
+phi = (1 + sqrt(5)) / 2;
 
 ps2_thickness = 28; // Includes rubber feet.
 ps2_top_thickness = 15; // the layer that juts out on the front and top.
@@ -52,8 +53,17 @@ module stand(
 ){
     module leg(width, height, thickness) {
         module half_leg(width, height, thickness) {
-            translate([(ps2_thickness + width) / 2, 0, height / 2])
-                cube(size=[width, thickness, height], center=true);
+            translate([(ps2_thickness) / 2, -thickness / 2, 0])
+                difference() {
+                    cube(size=[width, thickness, height]);
+                    translate([width, thickness + e, height])
+                        rotate([90,0,0])
+                        scale([width - ps2_ridge_thickness,
+                              height - ps2_ridge_thickness,
+                              thickness + 2 * e])
+                        cylinder($fn=72);
+                }
+
         }
         half_leg(width, height, thickness);
         mirror([1, 0, 0]) half_leg(width, height, thickness);
@@ -124,7 +134,7 @@ module stand(
 shade = .5;
 color([shade,shade,shade])
 stand(
-  60,                                   // leg_width
+  100 / phi,                                   // leg_width
   100,                                  // leg_height
   ps2_top_thickness,                    // leg_thickness
   ps2_length - 20 - ps2_top_thickness,  // leg_spacing
