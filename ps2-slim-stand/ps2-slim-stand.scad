@@ -67,12 +67,17 @@ module stand(
             // inset) is the origin. Positive x is right, and positive z is
             // down.
             difference() {
+                // Main base slab.
                 translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
                     cube(size=[width, length, height + ps2_ridge_height]);
+
                 translate([0, 0, -e])
                 union() {
+                    // Main vent area.
                     translate([0, ps2_rear_to_vent_rear, 0])
                         cube(size=[ps2_thickness, ps2_vent_length, height + 2*e]);
+
+                    // Front vent slots.
                     for (i = [0 : num_slots - 1]) {
                         translate([i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, 0])
                             cube(size=[ps2_ridge_thickness, ps2_length, height - ps2_ridge_thickness]);
