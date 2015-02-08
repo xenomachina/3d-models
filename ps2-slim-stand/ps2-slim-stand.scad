@@ -79,8 +79,11 @@ module stand(
                 translate([0, 0, -e])
                 union() {
                     // Main vent area.
-                    translate([0, ps2_rear_to_vent_rear, 0])
-                        cube(size=[ps2_thickness, ps2_vent_length, height + 2*e]);
+                    translate([0, ps2_rear_to_vent_rear + height, 0]) {
+                        cube(size=[ps2_thickness, ps2_vent_length - height, height + 2*e]);
+                        rotate([0,90,0])
+                            cylinder(h=ps2_thickness, r=height);
+                    }
 
                     // Front vent slots.
                     for (i = [0 : num_slots - 1]) {
