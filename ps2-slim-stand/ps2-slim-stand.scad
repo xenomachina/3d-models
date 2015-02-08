@@ -51,12 +51,12 @@ module stand(
     base_height
 ){
     module leg(width, height, thickness) {
-        translate([0, 0, height / 2])
-            difference() {
-                cube(size=[width * 2 + ps2_thickness, thickness, height], center=true);
-
-                cube(size=[ps2_thickness, thickness + e, height + e], center=true);
-            }
+        module half_leg(width, height, thickness) {
+            translate([(ps2_thickness + width) / 2, 0, height / 2])
+                cube(size=[width, thickness, height], center=true);
+        }
+        half_leg(width, height, thickness);
+        mirror([1, 0, 0]) half_leg(width, height, thickness);
     }
 
     module base(width, length, height) {
