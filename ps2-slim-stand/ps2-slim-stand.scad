@@ -62,14 +62,19 @@ module stand(
     module base(width, length, height) {
         scale([1, -1, -1])
         translate([ps2_ridge_thickness - width / 2,
-                  (leg_spacing + leg_thickness) / 2 - length + 2 * ps2_ridge_thickness, 0])
+                  (leg_spacing + leg_thickness) / 2 - length + ps2_ridge_thickness, 0])
             // From here, the top back left corner of the base (inside the
             // inset) is the origin. Positive x is right, and positive z is
             // down.
             difference() {
-                // Main base slab.
-                translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
-                    cube(size=[width, length, height + ps2_ridge_height]);
+                union() {
+                    // Main base slab.
+                    translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
+                        cube(size=[width, length, height + ps2_ridge_height]);
+
+                     // Front outset.
+                    cube(size=[ps2_thickness, length, height]);
+                }
 
                 translate([0, 0, -e])
                 union() {
@@ -79,18 +84,22 @@ module stand(
 
                     // Front vent slots.
                     for (i = [0 : num_slots - 1]) {
-                        translate([i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, 0])
+                        translate([vent_offset + i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, 0])
                             cube(size=[ps2_ridge_thickness, ps2_length, height - ps2_ridge_thickness]);
                     }
                 }
             }
-                    num_slots =
-                        floor((ps2_thickness - ps2_ridge_spacing) /
-                        (ps2_ridge_thickness + ps2_ridge_spacing)) + 1;
+
+        num_slots =
+            floor((ps2_thickness - ps2_ridge_spacing - 2 * ps2_ridge_thickness) /
+                  (ps2_ridge_thickness + ps2_ridge_spacing)) + 1;
+        vent_offset = (ps2_thickness
+            - num_slots * ps2_ridge_spacing
+            - (num_slots - 1) * ps2_ridge_thickness) / 2;
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
-    base_length = (ps2_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness * 2;
+    base_length = (ps2_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness;
 
     difference() {
         union() {
