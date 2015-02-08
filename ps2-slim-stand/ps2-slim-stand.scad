@@ -35,6 +35,9 @@ ps2_top_thickness = 15; // the layer that juts out on the front and top.
 ps2_ridge_thickness = 2.85; // thickness of 3 cosmetic ridges on top layer.
 ps2_ridge_height = 2.45; // height of 3 cosmetic ridges on top layer.
 ps2_length = 150; // Length from front to back.
+ps2_rear_to_vent_rear = 68;
+ps2_rear_to_vent_front = 131;
+e = 0.04;
 
 module stand(
     leg_width,
@@ -45,12 +48,29 @@ module stand(
 ){
     module leg(width, height, thickness) {
         translate([0, 0, height / 2])
-        cube(size=[width * 2 + ps2_thickness, thickness, height], center=true);
+            difference() {
+                cube(size=[width * 2 + ps2_thickness, thickness, height], center=true);
+
+                cube(size=[ps2_thickness, thickness + e, height + e], center=true);
+            }
     }
 
     module base(width, length, height) {
-        translate([-width / 2, -(leg_spacing + leg_thickness) / 2, -height])
-            cube(size=[width, length, height + ps2_ridge_height]);
+        scale([1, -1, -1])
+        translate([ps2_ridge_thickness - width / 2,
+                  (leg_spacing + leg_thickness) / 2 - length + ps2_ridge_thickness, 0])
+            // From here, the top back left corner of the base (inside the
+            // inset) is the origin. Positive x is right, and positive z is
+            // down.
+            difference() {
+                translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
+                    cube(size=[width, length, height + ps2_ridge_height]);
+                translate([0, 0, -e])
+                union() {
+                    translate([0, ps2_rear_to_vent_rear, 0])
+                        cube(size=[ps2_thickness, length, 2*height]);
+                }
+            }
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
