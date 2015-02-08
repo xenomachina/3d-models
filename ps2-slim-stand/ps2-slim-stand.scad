@@ -30,6 +30,8 @@
  * Entertainment Inc. The author of this file has no affiliation with Sony
  * Computer Entertainment Inc.
  */
+e = 0.04;
+
 ps2_thickness = 28; // Includes rubber feet.
 ps2_top_thickness = 15; // the layer that juts out on the front and top.
 ps2_ridge_thickness = 2.85; // thickness of 3 cosmetic ridges on top layer.
@@ -37,7 +39,9 @@ ps2_ridge_height = 2.45; // height of 3 cosmetic ridges on top layer.
 ps2_length = 150; // Length from front to back.
 ps2_rear_to_vent_rear = 68;
 ps2_rear_to_vent_front = 131;
-e = 0.04;
+
+ps2_vent_length = ps2_rear_to_vent_front - ps2_rear_to_vent_rear;
+ps2_ridge_spacing = (ps2_top_thickness - 3 * ps2_ridge_thickness) / 2;
 
 module stand(
     leg_width,
@@ -58,7 +62,7 @@ module stand(
     module base(width, length, height) {
         scale([1, -1, -1])
         translate([ps2_ridge_thickness - width / 2,
-                  (leg_spacing + leg_thickness) / 2 - length + ps2_ridge_thickness, 0])
+                  (leg_spacing + leg_thickness) / 2 - length + 2 * ps2_ridge_thickness, 0])
             // From here, the top back left corner of the base (inside the
             // inset) is the origin. Positive x is right, and positive z is
             // down.
@@ -68,13 +72,20 @@ module stand(
                 translate([0, 0, -e])
                 union() {
                     translate([0, ps2_rear_to_vent_rear, 0])
-                        cube(size=[ps2_thickness, length, 2*height]);
+                        cube(size=[ps2_thickness, ps2_vent_length, height + 2*e]);
+                    for (i = [0 : num_slots - 1]) {
+                        translate([i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, 0])
+                            cube(size=[ps2_ridge_thickness, ps2_length, height - ps2_ridge_thickness]);
+                    }
                 }
             }
+                    num_slots =
+                        floor((ps2_thickness - ps2_ridge_spacing) /
+                        (ps2_ridge_thickness + ps2_ridge_spacing)) + 1;
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
-    base_length = (ps2_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness;
+    base_length = (ps2_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness * 2;
 
     difference() {
         union() {
@@ -99,7 +110,7 @@ stand(
   60,                                   // leg_width
   100,                                  // leg_height
   ps2_top_thickness,                    // leg_thickness
-  ps2_length - 45 - ps2_top_thickness,  // leg_spacing
+  ps2_length - 20 - ps2_top_thickness,  // leg_spacing
   20                                    // base_height
 );
 
