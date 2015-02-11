@@ -148,8 +148,8 @@ module stand(
 shade = .5;
 color([shade,shade,shade])
 stand(
-  100 / phi,                                   // leg_width
-  100,                                  // leg_height
+  37,                                   // leg_width
+  37 * phi,                             // leg_height
   ps2_top_thickness,                    // leg_thickness
   ps2_length - 20 - ps2_top_thickness,  // leg_spacing
   20                                    // base_height
