@@ -58,10 +58,24 @@ module stand(
                     cube(size=[width, thickness, height]);
                     translate([width, thickness + e, height])
                         rotate([90,0,0])
+                        union(){
+                            scale([width - ps2_ridge_thickness - ps2_ridge_height,
+                                  height - ps2_ridge_thickness - ps2_ridge_height,
+                                  thickness + 2 * e])
+                                cylinder($fn=72);
+
+                            for (i = [0 : 1]) {
+                                translate([0, 0,
+                                          ps2_ridge_thickness + i *
+                                          (ps2_ridge_thickness +
+                                           ps2_ridge_spacing)]) {
                         scale([width - ps2_ridge_thickness,
                               height - ps2_ridge_thickness,
                               thickness + 2 * e])
                         cylinder($fn=72);
+                }
+                            }
+                        }
                 }
 
         }
