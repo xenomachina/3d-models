@@ -154,9 +154,3 @@ stand(
   ps2_length - 20 - ps2_top_thickness,  // leg_spacing
   20                                    // base_height
 );
-
-/* Origin marker. Handy for debugging.
-cube([100,100,.01], center=true);
-cube([.01,100,100], center=true);
-cube([100,.01,100], center=true);
-*/
