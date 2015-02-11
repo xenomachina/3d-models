@@ -69,11 +69,11 @@ module stand(
                                           ps2_ridge_thickness + i *
                                           (ps2_ridge_thickness +
                                            ps2_ridge_spacing)]) {
-                        scale([width - ps2_ridge_thickness,
-                              height - ps2_ridge_thickness,
-                              thickness + 2 * e])
-                        cylinder($fn=72);
-                }
+                                    scale([width - ps2_ridge_thickness,
+                                          height - ps2_ridge_thickness,
+                                          ps2_ridge_spacing])
+                                        cylinder($fn=72);
+                                }
                             }
                         }
                 }
