@@ -37,9 +37,12 @@ ps2_thickness = 28; // Includes rubber feet.
 ps2_top_thickness = 15; // the layer that juts out on the front and top.
 ps2_ridge_thickness = 2.85; // thickness of 3 cosmetic ridges on top layer.
 ps2_ridge_height = 2.45; // height of 3 cosmetic ridges on top layer.
-ps2_length = 150; // Length from front to back.
+ps2_top_length = 151; // Length from front to back.
+ps2_bottom_length = 146;
 ps2_rear_to_vent_rear = 68;
 ps2_rear_to_vent_front = 131;
+ps2_top_width = 229;
+ps2_bottom_width = 211;
 
 ps2_vent_length = ps2_rear_to_vent_front - ps2_rear_to_vent_rear;
 ps2_ridge_spacing = (ps2_top_thickness - 3 * ps2_ridge_thickness) / 2;
@@ -87,20 +90,20 @@ module stand(
         scale([1, -1, -1])
         translate([ps2_ridge_thickness - width / 2,
                   (leg_spacing + leg_thickness) / 2 - length + ps2_ridge_thickness, 0])
-            // From here, the top back left corner of the base (inside the
-            // inset) is the origin. Positive x is right, and positive z is
-            // down.
-            difference() {
-                union() {
-                    // Main base slab.
-                    translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
-                        cube(size=[width, length, height + ps2_ridge_height]);
+        // From here, the top back left corner of the base (inside the
+        // inset) is the origin. Positive x is right, and positive z is
+        // down.
+        difference() {
+            union() {
+                // Main base slab.
+                translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
+                    cube(size=[width, length, height + ps2_ridge_height]);
 
-                     // Front outset.
-                    cube(size=[ps2_thickness, length, height]);
-                }
+                // Front outset.
+                cube(size=[ps2_thickness, length, height]);
+            }
 
-                translate([0, 0, -e])
+            translate([0, 0, -e])
                 union() {
                     // Main vent area.
                     translate([0, ps2_rear_to_vent_rear + height, 0]) {
@@ -112,10 +115,10 @@ module stand(
                     // Front vent slots.
                     for (i = [0 : num_slots - 1]) {
                         translate([vent_offset + i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, 0])
-                            cube(size=[ps2_ridge_thickness, ps2_length, height - ps2_ridge_thickness]);
+                            cube(size=[ps2_ridge_thickness, ps2_top_length, height - ps2_ridge_thickness]);
                     }
                 }
-            }
+        }
 
         num_slots =
             floor((ps2_thickness - ps2_ridge_spacing - 2 * ps2_ridge_thickness) /
@@ -126,7 +129,7 @@ module stand(
     }
 
     base_width = ps2_thickness + ps2_ridge_thickness * 2;
-    base_length = (ps2_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness;
+    base_length = (ps2_top_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness;
 
     difference() {
         union() {
@@ -141,16 +144,30 @@ module stand(
 
         // slot for PS2 to fit into
         translate([0, 0, leg_height / 2])
-            cube(size=[ps2_thickness, ps2_length, leg_height], center=true);
+            cube(size=[ps2_thickness, ps2_top_length, leg_height], center=true);
     }
+
 }
 
 shade = .5;
 color([shade,shade,shade])
 stand(
-  37,                                   // leg_width
-  37 * phi,                             // leg_height
-  ps2_top_thickness,                    // leg_thickness
-  ps2_length - 20 - ps2_top_thickness,  // leg_spacing
-  20                                    // base_height
+  37,                                           // leg_width
+  37 * phi,                                     // leg_height
+  ps2_top_thickness,                            // leg_thickness
+  ps2_top_length - 20 - ps2_top_thickness,      // leg_spacing
+  20                                            // base_height
 );
+
+/*
+// PS2 Slim stand-in for debugging purposes.
+color([shade,shade / 2,shade])
+translate([-ps2_thickness / 2, ps2_top_length / 2, 0])
+    union() {
+        translate([0,-ps2_top_length,0])
+            cube([ps2_top_thickness, ps2_top_length, ps2_top_width]);
+        translate([ps2_top_thickness,-ps2_bottom_length,0])
+            cube([ps2_thickness - ps2_top_thickness, ps2_bottom_length,
+                 ps2_bottom_width]);
+    }
+*/
