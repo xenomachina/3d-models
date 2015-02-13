@@ -37,6 +37,7 @@ ps2_thickness = 28; // Includes rubber feet.
 ps2_top_thickness = 15; // the layer that juts out on the front and top.
 ps2_ridge_thickness = 2.85; // thickness of 3 cosmetic ridges on top layer.
 ps2_ridge_height = 2.45; // height of 3 cosmetic ridges on top layer.
+ps2_ridge_micro_height = 0.2; // height of 3 cosmetic ridges on bottom end.
 ps2_top_length = 151; // Length from front to back.
 ps2_bottom_length = 146;
 ps2_rear_to_vent_rear = 68;
@@ -106,6 +107,9 @@ module stand(
 
             translate([0, 0, -e])
                 union() {
+                    // Tolerance for micro-ridges
+                    cube([ps2_top_thickness + ps2_ridge_micro_height, ps2_top_length, ps2_ridge_micro_height]);
+
                     // Main vent area.
                     translate([0, ps2_rear_to_vent_rear + height, 0]) {
                         cube(size=[ps2_thickness, ps2_vent_length - height, height + 2*e]);
