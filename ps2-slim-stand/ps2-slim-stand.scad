@@ -146,10 +146,6 @@ module stand(
 
             base(base_width, base_length, base_height);
         }
-
-        // slot for PS2 to fit into
-        translate([0, 0, leg_height / 2])
-            cube(size=[ps2_thickness, ps2_top_length, leg_height], center=true);
     }
 
 }
