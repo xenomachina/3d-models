@@ -45,6 +45,7 @@ ps2_rear_to_vent_front = 131;
 ps2_top_width = 229;
 ps2_bottom_width = 211;
 
+ps2_bottom_thickness = ps2_thickness - ps2_top_thickness;
 ps2_vent_length = ps2_rear_to_vent_front - ps2_rear_to_vent_rear;
 ps2_ridge_spacing = (ps2_top_thickness - 3 * ps2_ridge_thickness) / 2;
 $fn=360;
@@ -151,13 +152,16 @@ module stand(
 }
 
 shade = .5;
+base_height = ps2_bottom_thickness;
+leg_width = 35;
+
 color([shade,shade,shade])
 stand(
-  37,                                           // leg_width
-  37 * phi,                                     // leg_height
+  leg_width,                                    // leg_width
+  leg_width + base_height,                      // leg_height
   ps2_top_thickness,                            // leg_thickness
   ps2_top_length - 20 - ps2_top_thickness,      // leg_spacing
-  20                                            // base_height
+  base_height                                   // base_height
 );
 
 // PS2 Slim stand-in for debugging purposes.
