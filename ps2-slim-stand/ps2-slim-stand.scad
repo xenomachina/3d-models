@@ -160,10 +160,11 @@ stand(
   20                                            // base_height
 );
 
-/*
 // PS2 Slim stand-in for debugging purposes.
+/*
 color([shade,shade / 2,shade])
 translate([-ps2_thickness / 2, ps2_top_length / 2, 0])
+    scale([1,-1,1])
     union() {
         translate([0,-ps2_top_length,0])
             cube([ps2_top_thickness, ps2_top_length, ps2_top_width]);
