@@ -46,6 +46,7 @@ ps2_bottom_width = 211;
 
 ps2_vent_length = ps2_rear_to_vent_front - ps2_rear_to_vent_rear;
 ps2_ridge_spacing = (ps2_top_thickness - 3 * ps2_ridge_thickness) / 2;
+$fn=360;
 
 module stand(
     leg_width,
