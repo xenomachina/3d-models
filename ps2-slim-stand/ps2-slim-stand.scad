@@ -44,6 +44,7 @@ ps2_rear_to_vent_rear = 68;
 ps2_rear_to_vent_front = 131;
 ps2_top_width = 229;
 ps2_bottom_width = 211;
+vent_wall_thickness = 2.25; // Thickness of wall between vent and nearest edge
 
 ps2_bottom_thickness = ps2_thickness - ps2_top_thickness;
 ps2_vent_length = ps2_rear_to_vent_front - ps2_rear_to_vent_rear;
@@ -91,19 +92,23 @@ module stand(
 
     module base(width, length, height) {
         scale([1, -1, -1])
-        translate([ps2_ridge_thickness - width / 2,
-                  (leg_spacing + leg_thickness) / 2 - length + ps2_ridge_thickness, 0])
+        translate([-width / 2,
+                  - (length -  ps2_ridge_thickness) / 2 , 0])
         // From here, the top back left corner of the base (inside the
         // inset) is the origin. Positive x is right, and positive z is
         // down.
         difference() {
             union() {
                 // Main base slab.
-                translate([-ps2_ridge_thickness, -ps2_ridge_thickness, -ps2_ridge_height])
-                    cube(size=[width, length, height + ps2_ridge_height]);
+                translate([0, -ps2_ridge_thickness, 0])
+                    cube([width, length, height]);
 
-                // Front outset.
-                cube(size=[ps2_thickness, length, height]);
+                // Ridge on base at back.
+                translate([0, -ps2_ridge_thickness, -ps2_ridge_height])
+                    cube([width, ps2_ridge_thickness, ps2_ridge_height + height]);
+
+                // Nub at front vent area.
+                translate([ps2_thickness - nub_width, ps2_bottom_length, -nub_height]) cube([nub_width, ps2_top_length - ps2_bottom_length, nub_height + height]);
             }
 
             translate([0, 0, -e])
@@ -111,31 +116,40 @@ module stand(
                     // Tolerance for micro-ridges
                     cube([ps2_top_thickness + ps2_ridge_micro_height, ps2_top_length, ps2_ridge_micro_height]);
 
+                    // Interior void
+                    translate([ps2_ridge_thickness, ps2_ridge_thickness, 0]) {
+                        cube([vent_width, ps2_rear_to_vent_rear - 2* ps2_ridge_thickness, vent_height]);
+                    }
+
                     // Main vent area.
-                    translate([0, ps2_rear_to_vent_rear + height, 0]) {
-                        cube(size=[ps2_thickness, ps2_vent_length - height, height + 2*e]);
+                    translate([ps2_ridge_thickness, ps2_rear_to_vent_rear + vent_height, 0]) {
+                        cube(size=[vent_width, ps2_vent_length - vent_height + e , height - ps2_ridge_thickness]);
                         rotate([0,90,0])
-                            cylinder(h=ps2_thickness, r=height);
+                            cylinder(h=vent_width, r=vent_height);
                     }
 
                     // Front vent slots.
                     for (i = [0 : num_slots - 1]) {
-                        translate([vent_offset + i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, 0])
-                            cube(size=[ps2_ridge_thickness, ps2_top_length, height - ps2_ridge_thickness]);
+                        translate([vent_offset + i * (ps2_ridge_thickness + ps2_ridge_spacing), ps2_rear_to_vent_front - e, -nub_height])
+                            cube(size=[ps2_ridge_thickness, ps2_top_length, height - ps2_ridge_thickness + nub_height]);
                     }
                 }
         }
 
+        // The extra 0.5 * ps2_ridge_spacing is to make sure the transition
+        // happens in the middle of a vent slot.
+        nub_width = ps2_ridge_thickness * 2 + ps2_ridge_spacing * 1.5;
+        nub_height = ps2_ridge_height;
         num_slots =
             floor((ps2_thickness - ps2_ridge_spacing - 2 * ps2_ridge_thickness) /
                   (ps2_ridge_thickness + ps2_ridge_spacing)) + 1;
-        vent_offset = (ps2_thickness
-            - num_slots * ps2_ridge_spacing
-            - (num_slots - 1) * ps2_ridge_thickness) / 2;
+        vent_offset = ps2_ridge_thickness;
+        vent_width = width - vent_wall_thickness - ps2_ridge_thickness;
+        vent_height = height - ps2_ridge_thickness;
     }
 
-    base_width = ps2_thickness + ps2_ridge_thickness * 2;
-    base_length = (ps2_top_length + leg_spacing + leg_thickness) / 2 + ps2_ridge_thickness;
+    base_width = ps2_thickness;
+    base_length = ps2_top_length + ps2_ridge_thickness;
 
     difference() {
         union() {
