@@ -39,7 +39,7 @@ ps2_ridge_thickness = 2.85; // thickness of 3 cosmetic ridges on top layer.
 ps2_ridge_height = 2.45; // height of 3 cosmetic ridges on top layer.
 ps2_ridge_micro_height = 0.2; // height of 3 cosmetic ridges on bottom end.
 ps2_top_length = 151; // Length from front to back.
-ps2_bottom_length = 146;
+ps2_bottom_length = 147.3;
 ps2_rear_to_vent_rear = 68;
 ps2_rear_to_vent_front = 131;
 ps2_top_width = 229;
@@ -124,7 +124,7 @@ module stand(
                     // Main vent area.
                     translate([ps2_ridge_thickness, ps2_rear_to_vent_rear + vent_height, 0]) {
                         cube(size=[vent_width, ps2_vent_length - vent_height + e , height - ps2_ridge_thickness]);
-                        rotate([0,90,0])
+                    rotate([0,90,0])
                             cylinder(h=vent_width, r=vent_height);
                     }
 
