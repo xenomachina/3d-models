@@ -67,7 +67,7 @@ module stand(
                             scale([width - ps2_ridge_thickness - ps2_ridge_height,
                                   height - ps2_ridge_thickness - ps2_ridge_height,
                                   thickness + 2 * e])
-                                cylinder($fn=72);
+                                cylinder();
 
                             for (i = [0 : 1]) {
                                 translate([0, 0,
@@ -77,7 +77,7 @@ module stand(
                                     scale([width - ps2_ridge_thickness,
                                           height - ps2_ridge_thickness,
                                           ps2_ridge_spacing])
-                                        cylinder($fn=72);
+                                        cylinder();
                                 }
                             }
                         }
