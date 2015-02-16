@@ -66,6 +66,26 @@ module top_triangle() {
     my_saddle_length = 2*r - saddle_length - 2 * front_arm_thickness;
 }
 
+module top() {
+    top_triangle();
+    hull() {
+        intersection() {
+            top_triangle();
+            translate([peak_x, 0, 0]) {
+                translate([-thickness/2, -2*r-top_length, 0]) cube([thickness, top_length + 2*r, thickness]);
+            }
+        }
+        translate([peak_x - thickness/2, 0, 0]) {
+            difference() {
+                translate([0, 0, r-lat_bar_length])
+                    rotate([0, 90, 0]) cylinder(h=thickness, r=r);
+                translate([-e, 0, -lat_bar_length]) cube([thickness + 2*e, r, 2*r]);
+            }
+        }
+    }
+    peak_x = front_arm_thickness - r + (-top_length - 2*r) * cos(top_angle);
+}
+
 module front_arm() {
     translate([front_arm_thickness - r, -r, 0]) hull() {
         cylinder(h=thickness, r=r);
@@ -86,7 +106,7 @@ module bezel_hook() {
 }
 
 module bracket() {
-    top_triangle();
+    top();
     front_arm();
     bezel_hook();
 }
