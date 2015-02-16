@@ -39,7 +39,8 @@ module rcube(size=[1,1,1], r=0) {
 }
 
 saddle_length = 43;
-plate_depth = 5;
+thickness = 5;
+min_thickness = 1;
 lat_bar_length = 50;
 bezel_depth = 11.5;
 front_arm_thickness = 18.5;
@@ -67,15 +68,21 @@ module top_triangle() {
 
 module front_arm() {
     translate([front_arm_thickness - r, -r, 0]) hull() {
-        cylinder(h=plate_depth, r=r);
-        translate([2*r - front_arm_thickness, 0, 0]) cylinder(h=plate_depth, r=r);
-        translate([2*r - front_arm_thickness, bezel_width + front_arm_thickness, 0]) cylinder(h=plate_depth, r=r);
+        cylinder(h=thickness, r=r);
+        translate([2*r - front_arm_thickness, 0, 0]) cylinder(h=thickness, r=r);
+        translate([2*r - front_arm_thickness, bezel_width + front_arm_thickness, 0]) cylinder(h=thickness, r=r);
     }
 }
 
 module bezel_hook() {
-    translate([-bezel_depth, bezel_width, 0])
-        cube([bezel_depth + r, front_arm_thickness, plate_depth]);
+    translate([-bezel_depth, bezel_width, 0]) {
+        cube([bezel_depth + r, front_arm_thickness, thickness]);
+        hull() {
+            cube([thickness, front_arm_thickness, thickness]);
+            translate([0, 0, r-lat_bar_length])
+                rotate([0, 90, 0]) cylinder(h=min_thickness, r=r);
+        }
+    }
 }
 
 module bracket() {
