@@ -60,12 +60,9 @@ stand_height = 90;
 // Set these based on the tablets you intend to use.
 max_tablet_width = 230;
 min_tablet_bottom_bezel = 9;
-min_tablet_screen_width = 23;
+min_tablet_screen_width = 190;
 max_tablet_thickness = 15;
 
-stand_width = max_tablet_width + stand_thickness * 2;
-stand_flange_height = stand_height / phi;
-stand_depth = max_tablet_thickness + stand_thickness * 2;
 full_saddle_length = saddle_length + 2 * front_arm_thickness;
 
 module top_triangle() {
@@ -119,15 +116,27 @@ module bracket() {
 module stand() {
     translate([-stand_depth/2 - stand_thickness, -stand_height, 0]) {
         difference() {
-        cube([stand_depth, stand_height, stand_width]);
+            cube([stand_depth, stand_height, stand_width]);
             union() {
-                translate([stand_thickness, -e, stand_thickness])
-                    cube([stand_depth - stand_thickness + e,
+                translate([stand_thickness, -e, stand_thickness]) {
+                    cube([stand_depth - 2*stand_thickness + e,
                          stand_height - stand_thickness + e, 
-                         stand_width - stand_thickness*2 + e]);
+                         stand_width - 2*stand_thickness + e]);
+                    cube([stand_depth - stand_thickness + e,
+                         stand_height - stand_thickness - stand_flange_height + e, 
+                         stand_width - 2*stand_thickness + e]);
+                    translate([0, 0,
+                              (stand_width - min_tablet_screen_width) / 2 - stand_thickness])
+                    cube([stand_depth - stand_thickness + e,
+                         stand_height - stand_thickness - min_tablet_bottom_bezel + e, 
+                         min_tablet_screen_width]);
+                }
             }
         }
     }
+    stand_width = max_tablet_width + stand_thickness * 2;
+    stand_flange_height = stand_height / phi;
+    stand_depth = max_tablet_thickness + stand_thickness * 2;
 }
 
 rotate([0, 0, -top_angle]) translate([0, 0, -bracket_thickness]) bracket();
