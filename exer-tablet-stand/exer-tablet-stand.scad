@@ -50,6 +50,9 @@ r = 5;
 top_angle = 45;
 top_length = 30;
 screw_r = 2;
+stand_depth = 15;
+stand_height = 90;
+stand_width = 230;
 
 full_saddle_length = saddle_length + 2 * front_arm_thickness;
 
@@ -106,4 +109,10 @@ module bracket() {
     bezel_hook();
 }
 
-translate([0, 0, -thickness]) bracket();
+module stand() {
+    translate([-stand_depth/2 - thickness, -stand_height, 0])
+        cube([stand_depth, stand_height, stand_width]);
+}
+
+rotate([0, 0, -top_angle]) translate([0, 0, -thickness]) bracket();
+stand();
