@@ -110,9 +110,18 @@ module bracket() {
 }
 
 module stand() {
-    translate([-stand_depth/2 - thickness, -stand_height, 0])
+    translate([-stand_depth/2 - thickness, -stand_height, 0]) {
+        difference() {
         cube([stand_depth, stand_height, stand_width]);
+            union() {
+                translate([thickness, -e, thickness])
+                    cube([stand_depth - thickness + e,
+                         stand_height - thickness + e, 
+                         stand_width - thickness*2 + e]);
+            }
+        }
+    }
 }
 
 rotate([0, 0, -top_angle]) translate([0, 0, -thickness]) bracket();
-stand();
+render(convexity=2) stand();
