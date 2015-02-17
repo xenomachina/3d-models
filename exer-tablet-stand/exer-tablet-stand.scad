@@ -106,4 +106,4 @@ module bracket() {
     bezel_hook();
 }
 
-bracket();
+translate([0, 0, -thickness]) bracket();
