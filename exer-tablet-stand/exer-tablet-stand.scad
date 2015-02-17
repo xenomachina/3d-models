@@ -94,7 +94,7 @@ module bezel_hook() {
         cube([bezel_depth + r, front_arm_thickness, thickness]);
         hull() {
             cube([thickness, front_arm_thickness, thickness]);
-            translate([0, 0, r-lat_bar_length])
+            translate([0, r, r-lat_bar_length])
                 rotate([0, 90, 0]) cylinder(h=min_thickness, r=r);
         }
     }
