@@ -49,6 +49,7 @@ front_arm_length = 67;
 r = 5;
 top_angle = 45;
 top_length = 30;
+screw_r = 2;
 
 full_saddle_length = saddle_length + 2 * front_arm_thickness;
 
@@ -56,7 +57,8 @@ module top_triangle() {
     hull() {
         translate([front_arm_thickness - r, -r, 0]) {
             cylinder(h=r, r=r);
-            translate([my_saddle_length, 0, 0]) cylinder(h=r, r=r);
+            translate([my_saddle_length, r-front_arm_thickness/2, 0]) cylinder(h=r,
+                    r=front_arm_thickness/2);
             translate([
                     (-top_length - 2*r) * cos(top_angle),
                     (-top_length - 2*r) * sin(top_angle), 0])
@@ -67,7 +69,15 @@ module top_triangle() {
 }
 
 module top() {
-    top_triangle();
+    difference() {
+        top_triangle();
+        translate([-saddle_length, 0, 0]) {
+            rotate([0, 0, top_angle]) {
+                translate([-front_arm_thickness/2, -front_arm_thickness/2, -e])
+                    cylinder(r=screw_r, h=thickness+2*e);
+            }
+        }
+    }
     hull() {
         intersection() {
             top_triangle();
