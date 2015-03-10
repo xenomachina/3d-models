@@ -27,7 +27,8 @@
 $fn = 36;
 
 ring_dialmeter = 8;
-square_hole_length = 4;
+square_hole_fudge = 4 - 3.85;
+square_hole_length = 4 + square_hole_fudge;
 main_thickness = 3.01;
 main_width = 3.18;
 main_length = 43.89;
@@ -37,6 +38,7 @@ rod_length = 18.75;
 module pendulum_pusher() {
     difference() {
         union() {
+            cylinder(d=ring_dialmeter + square_hole_fudge, h=main_thickness);
             cylinder(d=ring_dialmeter, h=main_thickness);
             translate([square_hole_length/2, -main_width/2, 0])
                 cube([main_length - (square_hole_length + ring_dialmeter + main_width)/2,
