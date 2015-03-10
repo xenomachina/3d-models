@@ -38,17 +38,24 @@ rod_length = 18.75;
 module pendulum_pusher() {
     difference() {
         union() {
+            // Round end
             cylinder(d=ring_dialmeter + square_hole_fudge, h=main_thickness);
-            cylinder(d=ring_dialmeter, h=main_thickness);
+
+            // Main shaft
             translate([square_hole_length/2, -main_width/2, 0])
                 cube([main_length - (square_hole_length + ring_dialmeter + main_width)/2,
                      main_width, main_thickness]);
+
             translate([main_length - (ring_dialmeter + main_width)/2, 0, 0]) {
+                // Pusher rod
                 cylinder(d=rod_diameter, h=rod_length);
+
+                // Rounded end of main shaft
                 cylinder(d=main_width, h=main_thickness);
             }
 
         }
+        // Square hole
         translate([-square_hole_length/2, -square_hole_length/2, 0])
             cube([square_hole_length, square_hole_length, main_thickness]);
     }
