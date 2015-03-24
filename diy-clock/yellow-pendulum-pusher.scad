@@ -61,4 +61,4 @@ module pendulum_pusher() {
     }
 }
 
-pendulum_pusher();
+rotate([90,0,0]) pendulum_pusher();
