@@ -60,10 +60,42 @@ stand_height = 90;
 // Set these based on the tablets you intend to use.
 max_tablet_width = 230;
 min_tablet_bottom_bezel = 9;
-min_tablet_screen_width = 190;
+max_tablet_screen_width = 190;
 max_tablet_thickness = 15;
 
 full_saddle_length = saddle_length + 2 * front_arm_thickness;
+
+module x(x) {
+    translate([x,0,0]) children();
+}
+
+module y(y) {
+    translate([0,y,0]) children();
+}
+
+module z(z) {
+    translate([0,0,z]) children();
+}
+
+module rotx(angle) {
+    rotate([angle, 0, 0]) children();
+}
+
+module roty(angle) {
+    rotate([0, angle, 0]) children();
+}
+
+module rotz(angle) {
+    rotate([0, 0, angle]) children();
+}
+
+module bevel(r=10, h=20) {
+    render(convexity=2)
+    difference() {
+        cube([r, r, h]);
+        translate([r,r,-e]) cylinder(r=r, h=h + 2*e);
+    }
+}
 
 module top_triangle() {
     hull() {
@@ -114,22 +146,40 @@ module bracket() {
 }
 
 module stand() {
-    translate([-stand_depth/2 - stand_thickness, -stand_height, 0]) {
+    translate([-stand_depth/2, -stand_height, 0]) {
         difference() {
             cube([stand_depth, stand_height, stand_width]);
             union() {
+                x(stand_depth) y(-e) rotz(90) bevel(r=stand_depth - stand_thickness, h=stand_width);
                 translate([stand_thickness, -e, stand_thickness]) {
+                    // pocket for tablet
                     cube([stand_depth - 2*stand_thickness + e,
                          stand_height - stand_thickness + e, 
                          stand_width - 2*stand_thickness + e]);
+
+                    // gap above flanges
                     cube([stand_depth - stand_thickness + e,
                          stand_height - stand_thickness - stand_flange_height + e, 
                          stand_width - 2*stand_thickness + e]);
+
                     translate([0, 0,
-                              (stand_width - min_tablet_screen_width) / 2 - stand_thickness])
-                    cube([stand_depth - stand_thickness + e,
-                         stand_height - stand_thickness - min_tablet_bottom_bezel + e, 
-                         min_tablet_screen_width]);
+                              (stand_width - max_tablet_screen_width) / 2 - stand_thickness]) {
+                        // gap between flanges
+                        cube([stand_depth - stand_thickness + e,
+                             stand_height - stand_thickness - min_tablet_bottom_bezel + e,
+                             max_tablet_screen_width]);
+
+                        x(stand_depth - 2*stand_thickness)
+                        y(stand_height - stand_thickness - stand_flange_height) union() {
+                            // bevel left flange
+                            roty(90) bevel(r=flange_width/2, h=stand_thickness + 2*e);
+
+                            // bevel right flange
+                            z(max_tablet_screen_width)
+                                mirror([0,0,1])
+                            roty(90) bevel(r=flange_width/2, h=stand_thickness + 2*e);
+                        }
+                    }
                 }
             }
         }
@@ -137,6 +187,8 @@ module stand() {
     stand_width = max_tablet_width + stand_thickness * 2;
     stand_flange_height = stand_height / phi;
     stand_depth = max_tablet_thickness + stand_thickness * 2;
+    flange_width = (stand_width - 2*stand_thickness - max_tablet_screen_width)
+        / 2;
 }
 
 rotate([0, 0, -top_angle]) translate([0, 0, -bracket_thickness]) bracket();
