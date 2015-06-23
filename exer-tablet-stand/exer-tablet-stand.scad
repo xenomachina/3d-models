@@ -65,131 +65,51 @@ max_tablet_thickness = 15;
 
 full_saddle_length = saddle_length + 2 * front_arm_thickness;
 
-module x(x) {
-    translate([x,0,0]) children();
-}
-
-module y(y) {
-    translate([0,y,0]) children();
-}
-
-module z(z) {
-    translate([0,0,z]) children();
-}
-
-module rotx(angle) {
-    rotate([angle, 0, 0]) children();
-}
-
-module roty(angle) {
-    rotate([0, angle, 0]) children();
-}
-
-module rotz(angle) {
-    rotate([0, 0, angle]) children();
-}
-
-module bevel(r=10, h=20) {
-    render(convexity=2)
-    difference() {
-        cube([r, r, h]);
-        translate([r,r,-e]) cylinder(r=r, h=h + 2*e);
-    }
-}
-
-module top_triangle() {
-    hull() {
-        translate([front_arm_thickness - r, -r, 0]) {
-            cylinder(h=bracket_thickness, r=r);
-            translate([my_saddle_length, r-front_arm_thickness/2, 0])
-                cylinder(h=bracket_thickness, r=front_arm_thickness/2);
-            translate([
-                    (-top_length - 2*r) * cos(top_angle),
-                    (-top_length - 2*r) * sin(top_angle), 0])
-                cylinder(h=bracket_thickness, r=r);
+module bracket() {
+    module top() {
+        module top_triangle() {
+            hull() {
+                translate([front_arm_thickness - r, -r, 0]) {
+                    cylinder(h=bracket_thickness, r=r);
+                    translate([my_saddle_length, r-front_arm_thickness/2, 0])
+                        cylinder(h=bracket_thickness, r=front_arm_thickness/2);
+                    translate([
+                            (-top_length - 2*r) * cos(top_angle),
+                            (-top_length - 2*r) * sin(top_angle), 0])
+                        cylinder(h=bracket_thickness, r=r);
+                }
+            }
+            my_saddle_length = 2*r - saddle_length - 2 * front_arm_thickness;
         }
-    }
-    my_saddle_length = 2*r - saddle_length - 2 * front_arm_thickness;
-}
 
-module top() {
-    difference() {
-        top_triangle();
-        translate([-saddle_length, 0, 0]) {
-            rotate([0, 0, top_angle]) {
-                translate([-front_arm_thickness/2, -front_arm_thickness/2, -e])
-                    cylinder(r=screw_r, h=bracket_thickness+2*e);
+        difference() {
+            top_triangle();
+            translate([-saddle_length, 0, 0]) {
+                rotate([0, 0, top_angle]) {
+                    translate([-front_arm_thickness/2, -front_arm_thickness/2, -e])
+                        cylinder(r=screw_r, h=bracket_thickness+2*e);
+                }
             }
         }
+        peak_x = front_arm_thickness - r + (-top_length - 2*r) * cos(top_angle);
     }
-    peak_x = front_arm_thickness - r + (-top_length - 2*r) * cos(top_angle);
-}
-
-module front_arm() {
-    translate([front_arm_thickness - r, -r, 0]) hull() {
-        cylinder(h=bracket_thickness, r=r);
-        translate([2*r - front_arm_thickness, 0, 0]) cylinder(h=bracket_thickness, r=r);
-        translate([2*r - front_arm_thickness, bezel_width + front_arm_thickness, 0]) cylinder(h=bracket_thickness, r=r);
+    module front_arm() {
+        translate([front_arm_thickness - r, -r, 0]) hull() {
+            cylinder(h=bracket_thickness, r=r);
+            translate([2*r - front_arm_thickness, 0, 0]) cylinder(h=bracket_thickness, r=r);
+            translate([2*r - front_arm_thickness, bezel_width + front_arm_thickness, 0]) cylinder(h=bracket_thickness, r=r);
+        }
     }
-}
 
-module bezel_hook() {
-    translate([-bezel_depth, bezel_width, 0]) {
-        cube([bezel_depth + r, front_arm_thickness, bracket_thickness]);
+    module bezel_hook() {
+        translate([-bezel_depth, bezel_width, 0]) {
+            cube([bezel_depth + r, front_arm_thickness, bracket_thickness]);
+        }
     }
-}
 
-module bracket() {
     top();
     front_arm();
     bezel_hook();
 }
 
-module stand() {
-    translate([-stand_depth/2, -stand_height, 0]) {
-        difference() {
-            cube([stand_depth, stand_height, stand_width]);
-            union() {
-                x(stand_depth) y(-e) rotz(90) bevel(r=stand_depth - stand_thickness, h=stand_width);
-                translate([stand_thickness, -e, stand_thickness]) {
-                    // pocket for tablet
-                    cube([stand_depth - 2*stand_thickness + e,
-                         stand_height - stand_thickness + e, 
-                         stand_width - 2*stand_thickness + e]);
-
-                    // gap above flanges
-                    cube([stand_depth - stand_thickness + e,
-                         stand_height - stand_thickness - stand_flange_height + e, 
-                         stand_width - 2*stand_thickness + e]);
-
-                    translate([0, 0,
-                              (stand_width - max_tablet_screen_width) / 2 - stand_thickness]) {
-                        // gap between flanges
-                        cube([stand_depth - stand_thickness + e,
-                             stand_height - stand_thickness - min_tablet_bottom_bezel + e,
-                             max_tablet_screen_width]);
-
-                        x(stand_depth - 2*stand_thickness)
-                        y(stand_height - stand_thickness - stand_flange_height) union() {
-                            // bevel left flange
-                            roty(90) bevel(r=flange_width/2, h=stand_thickness + 2*e);
-
-                            // bevel right flange
-                            z(max_tablet_screen_width)
-                                mirror([0,0,1])
-                            roty(90) bevel(r=flange_width/2, h=stand_thickness + 2*e);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    stand_width = max_tablet_width + stand_thickness * 2;
-    stand_flange_height = stand_height / phi;
-    stand_depth = max_tablet_thickness + stand_thickness * 2;
-    flange_width = (stand_width - 2*stand_thickness - max_tablet_screen_width)
-        / 2;
-}
-
 rotate([0, 0, -top_angle]) translate([0, 0, -bracket_thickness]) bracket();
-render(convexity=2) stand();
