@@ -19,7 +19,7 @@
  *   USA
  */
 
-//$fn = 360;
+$fn = 360;
 e = 0.04; // epsilon
 phi = (1 + sqrt(5)) / 2;
 
@@ -40,15 +40,18 @@ module rcube(size=[1,1,1], r=0) {
 }
 
 saddle_length = 43;
-bracket_thickness = 7;
+min_thickness = 5;
+max_thickness = 40;
 stand_thickness = 2;
-front_arm_thickness = 18.5;
 bezel_width = 46;
-front_arm_length = 67;
-r = 5;
 top_angle = 45;
 top_length = 30;
-screw_r = 2;
+
+screw_r = 5/2;
+r = 10.78 / 2; // must be greater than screw_r
+
+shelf_depth = 18.5;
+shelf_thickness = r*2;
 
 // Measurements from your exercise machine.
 bezel_depth = 11.5;
@@ -63,53 +66,84 @@ min_tablet_bottom_bezel = 9;
 max_tablet_screen_width = 190;
 max_tablet_thickness = 15;
 
-full_saddle_length = saddle_length + 2 * front_arm_thickness;
+// Maybe hull, otherwise union.
+module mhull(condition) {
+    if (condition) {
+        hull() children();
+    } else {
+        union() children();
+    }
+}
 
 module bracket() {
-    module top() {
-        module top_triangle() {
-            hull() {
-                translate([front_arm_thickness - r, -r, 0]) {
-                    cylinder(h=bracket_thickness, r=r);
-                    translate([my_saddle_length, r-front_arm_thickness/2, 0])
-                        cylinder(h=bracket_thickness, r=front_arm_thickness/2);
-                    translate([
-                            (-top_length - 2*r) * cos(top_angle),
-                            (-top_length - 2*r) * sin(top_angle), 0])
-                        cylinder(h=bracket_thickness, r=r);
-                }
-            }
-            my_saddle_length = 2*r - saddle_length - 2 * front_arm_thickness;
+    module top(holes) {
+        mhull(!holes) {
+            translate([r,-r,0])
+                cylinder(h=holes?max_thickness:min_thickness, r=holes?screw_r:r);
+            translate([r - saddle_length, -r, 0])
+                cylinder(h=min_thickness, r=holes?screw_r:r);
         }
+        translate([r,-r,0])
+            cylinder(h=max_thickness, r=holes?screw_r:r);
 
-        difference() {
-            top_triangle();
-            translate([-saddle_length, 0, 0]) {
-                rotate([0, 0, top_angle]) {
-                    translate([-front_arm_thickness/2, -front_arm_thickness/2, -e])
-                        cylinder(r=screw_r, h=bracket_thickness+2*e);
-                }
-            }
-        }
-        peak_x = front_arm_thickness - r + (-top_length - 2*r) * cos(top_angle);
     }
+
     module front_arm() {
-        translate([front_arm_thickness - r, -r, 0]) hull() {
-            cylinder(h=bracket_thickness, r=r);
-            translate([2*r - front_arm_thickness, 0, 0]) cylinder(h=bracket_thickness, r=r);
-            translate([2*r - front_arm_thickness, bezel_width + front_arm_thickness, 0]) cylinder(h=bracket_thickness, r=r);
+        hull() {
+            // top
+            translate([r , -r, 0])
+                cylinder(h=min_thickness, r=r);
+            // bottom
+            translate([r , bezel_width, 0])
+                cylinder(h=min_thickness, r=r);
         }
     }
 
     module bezel_hook() {
-        translate([-bezel_depth, bezel_width, 0]) {
-            cube([bezel_depth + r, front_arm_thickness, bracket_thickness]);
+        module ridge() {
+            hull(){
+                translate([0,-r,0])
+                    cylinder(r=screw_r, h=max_thickness);
+                cylinder(r=screw_r, h=max_thickness);
+            }
         }
+
+        // front arc
+        translate([0, bezel_width, 0]) {
+            intersection() {
+                cube([full_shelf_depth, shelf_thickness, max_thickness]);
+                union() {
+                    translate([full_shelf_depth - shelf_depth,0,0])
+                        scale([shelf_depth, shelf_thickness, max_thickness]) cylinder();
+                    cube([full_shelf_depth - shelf_depth, shelf_thickness, max_thickness]);
+                }
+            }
+        }
+        // front ridge
+        translate([full_shelf_depth-screw_r,bezel_width,0]) ridge();
+        translate([2*r - screw_r,bezel_width,0]) ridge();
+        // back cube
+        translate([-bezel_depth, bezel_width, 0]) {
+            cube([bezel_depth, shelf_thickness, max_thickness]);
+        }
+        full_shelf_depth = shelf_depth + 2 * (r + screw_r);
     }
 
-    top();
-    front_arm();
-    bezel_hook();
+    union() {
+        difference() {
+            union() {
+                top(false);
+                front_arm();
+                bezel_hook();
+            }
+            union() {
+                top(true);
+                translate([2*r - screw_r,bezel_width + shelf_thickness / 2,0]) 
+                    cylinder(r=screw_r, h=max_thickness);
+            }
+        }
+    }
 }
 
-rotate([0, 0, -top_angle]) translate([0, 0, -bracket_thickness]) bracket();
+//rotate([0, 0, -top_angle]) 
+translate([0, 0, -max_thickness]) bracket();
