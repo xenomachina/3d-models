@@ -85,6 +85,8 @@ stand_height = 90;
 
 shelf_width = (total_width - min_tablet_width) / 2;
 
+extra_thin = 1;
+
 // Maybe hull, otherwise union.
 module mhull(condition) {
     if (condition) {
@@ -141,7 +143,11 @@ module bracket() {
         }
         // front ridge
         translate([full_shelf_depth-screw_r,bezel_height,0]) ridge(2.5*r);
-        translate([2*r - screw_r,bezel_height,0]) ridge(r);
+
+        // back wall
+        translate([2*r - extra_thin, - r, 0])
+            cube([extra_thin, r + bezel_height, shelf_width]);
+
         // back cube
         translate([-bezel_depth, bezel_height, 0]) {
             cube([bezel_depth, shelf_thickness, shelf_width]);
