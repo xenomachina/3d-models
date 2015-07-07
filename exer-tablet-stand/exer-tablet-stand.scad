@@ -39,32 +39,51 @@ module rcube(size=[1,1,1], r=0) {
     d = r * 2;
 }
 
-saddle_length = 43;
-min_thickness = 5;
-max_thickness = 40;
-stand_thickness = 2;
-bezel_width = 46;
-top_angle = 45;
-top_length = 30;
+// Width of area stand will be mounted in. This is the interior width of the
+// bezel on the exercise machine.
+total_width = 228;
 
+// This is the size of the gap between the two halves of the shelf, so you want
+// it to be less than the width of the narrowest tablet you plan on using.
+min_tablet_width = 170;
+
+// Increasing this increases strength. It should be no greater than
+// shelf_width.
+min_thickness = 5;
+
+// The length from front to back over the top of the exercise machine's screen.
+// This does not to be precise, but should probably be within a cm or or so of
+// the actual screen depth.
+saddle_length = 53;
+
+// Height of top part of exercise machine's bezel.
+bezel_height = 46;
+
+// How "thick" the exercise machine's bezel is. If this is zero (ie: bezel is
+// flush with display) then you may need to use double-sided tape for
+// additional support, as this design expects to be able to "hook onto" the
+// bezel.
+bezel_depth = 9.5;
+
+// Radius of holes for threaded rod.
 screw_r = 5/2;
+
+// Radius on (most) corners. This also determines the width of the support
+// arms. (They'll be twice r.)
 r = 10.78 / 2; // must be greater than screw_r
 
+// This should be greater than the thickness of the thickest tablet you plan on
+// using (including it's case).
 shelf_depth = 18.5;
-shelf_thickness = r*2;
 
-// Measurements from your exercise machine.
-bezel_depth = 11.5;
+// Increasing this adds strength.
+shelf_thickness = r*2;
 
 // This you can set based on the height of your tablets. The taller the safer,
 // but the more material used, of course.
 stand_height = 90;
 
-// Set these based on the tablets you intend to use.
-max_tablet_width = 230;
-min_tablet_bottom_bezel = 9;
-max_tablet_screen_width = 190;
-max_tablet_thickness = 15;
+shelf_width = (total_width - min_tablet_width) / 2;
 
 // Maybe hull, otherwise union.
 module mhull(condition) {
@@ -79,12 +98,12 @@ module bracket() {
     module top(holes) {
         mhull(!holes) {
             translate([r,-r,0])
-                cylinder(h=holes?max_thickness:min_thickness, r=holes?screw_r:r);
+                cylinder(h=holes?shelf_width:min_thickness, r=holes?screw_r:r);
             translate([r - saddle_length, -r, 0])
                 cylinder(h=min_thickness, r=holes?screw_r:r);
         }
         translate([r,-r,0])
-            cylinder(h=max_thickness, r=holes?screw_r:r);
+            cylinder(h=shelf_width, r=holes?screw_r:r);
 
     }
 
@@ -94,37 +113,38 @@ module bracket() {
             translate([r , -r, 0])
                 cylinder(h=min_thickness, r=r);
             // bottom
-            translate([r , bezel_width, 0])
+            translate([r , bezel_height, 0])
                 cylinder(h=min_thickness, r=r);
         }
     }
 
     module bezel_hook() {
-        module ridge() {
+        module ridge(h) {
             hull(){
-                translate([0,-r,0])
-                    cylinder(r=screw_r, h=max_thickness);
-                cylinder(r=screw_r, h=max_thickness);
+                translate([0,-h,0])
+                    cylinder(r=screw_r, h=shelf_width);
+                cylinder(r=screw_r, h=shelf_width);
             }
         }
 
         // front arc
-        translate([0, bezel_width, 0]) {
+        translate([0, bezel_height, 0]) {
             intersection() {
-                cube([full_shelf_depth, shelf_thickness, max_thickness]);
+                cube([full_shelf_depth, shelf_thickness, shelf_width]);
                 union() {
                     translate([full_shelf_depth - shelf_depth,0,0])
-                        scale([shelf_depth, shelf_thickness, max_thickness]) cylinder();
-                    cube([full_shelf_depth - shelf_depth, shelf_thickness, max_thickness]);
+                        scale([shelf_depth, shelf_thickness, shelf_width]) cylinder();
+                    cube([full_shelf_depth - shelf_depth, shelf_thickness,
+                    shelf_width]);
                 }
             }
         }
         // front ridge
-        translate([full_shelf_depth-screw_r,bezel_width,0]) ridge();
-        translate([2*r - screw_r,bezel_width,0]) ridge();
+        translate([full_shelf_depth-screw_r,bezel_height,0]) ridge(2.5*r);
+        translate([2*r - screw_r,bezel_height,0]) ridge(r);
         // back cube
-        translate([-bezel_depth, bezel_width, 0]) {
-            cube([bezel_depth, shelf_thickness, max_thickness]);
+        translate([-bezel_depth, bezel_height, 0]) {
+            cube([bezel_depth, shelf_thickness, shelf_width]);
         }
         full_shelf_depth = shelf_depth + 2 * (r + screw_r);
     }
@@ -138,12 +158,11 @@ module bracket() {
             }
             union() {
                 top(true);
-                translate([2*r - screw_r,bezel_width + shelf_thickness / 2,0]) 
-                    cylinder(r=screw_r, h=max_thickness);
+                translate([2*r - screw_r,bezel_height + shelf_thickness / 2,0]) 
+                    cylinder(r=screw_r, h=shelf_width);
             }
         }
     }
 }
 
-//rotate([0, 0, -top_angle]) 
-translate([0, 0, -max_thickness]) bracket();
+translate([0, 0, -shelf_width]) bracket();
