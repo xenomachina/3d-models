@@ -66,11 +66,11 @@ bezel_height = 46;
 bezel_depth = 9.5;
 
 // Radius of holes for threaded rod.
-screw_r = 5/2;
+screw_r = 2.65;
 
 // Radius on (most) corners. This also determines the width of the support
 // arms. (They'll be twice r.)
-r = 10.78 / 2; // must be greater than screw_r
+r = screw_r + 2.9;
 
 // This should be greater than the thickness of the thickest tablet you plan on
 // using (including it's case).
