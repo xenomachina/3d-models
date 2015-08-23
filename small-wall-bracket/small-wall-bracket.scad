@@ -31,6 +31,8 @@ zip_tie_width = 6;
 zip_tie_thickness = 1.5;
 bottom_thickness = 3; // must be > zip_tie_thickness
 zip_tie_offset = 15.5;
+screw_head_r=7/2;
+screw_shaft_r=3.7/2;
 
 module main() {
     // The device bracket will rest on.
@@ -61,9 +63,9 @@ module main() {
             for(i=[1,3]){
                 translate([width/2, depth/4 * i, 0]) {
                     // screw head
-                    cylinder(r=7.5, h=height);
+                    cylinder(r=screw_head_r, h=height);
                     // screw shaft
-                    translate([0,0,-bottom_thickness]) cylinder(r=3.7, h=height);
+                    translate([0,0,-bottom_thickness]) cylinder(r=screw_shaft_r, h=height);
                 }
             }
         }
