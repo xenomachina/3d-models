@@ -23,6 +23,14 @@
 // "upside-down", as this completely eliminates overhangs, making for a really
 // easy print.
 
+// To create a dxf file with Inkscape that works in OpenSCAD:
+// - create a closed path
+// - go to Extensions / Modify Path / Flatten Beziers..., adjust settings and
+//   apply
+// - select all nodes with the node tool and "Make selected segments lines"
+// - Save as filetype "Desktop cutting plotter (AutoCAD DXF R14) (*.dxf)" and
+//   enable "us LWPOLYLINE"
+
 $fn=36;
 
 // Full height of cookie cutter.
