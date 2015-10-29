@@ -48,7 +48,7 @@ module blade() {
 }
 
 module outline() {
-    import(file="drawing.dxf");
+    mirror() import(file="drawing.dxf");
 }
 
 module offset_outline(r){
