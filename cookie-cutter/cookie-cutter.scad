@@ -23,7 +23,7 @@
 // "upside-down", as this completely eliminates overhangs, making for a really
 // easy print.
 
-$fn=360;
+$fn=36;
 
 // Full height of cookie cutter.
 HEIGHT = 10;
@@ -32,12 +32,20 @@ HEIGHT = 10;
 RIM_HEIGHT = 2;
 RIM_WIDTH = 10;
 
-// The blade actualld does the cutting.
+// The blade actually does the cutting.
 BLADE_THICKNESS = 2;
 
 // The bevel is what makes the blade sharp(ish).
 BEVEL_HEIGHT = HEIGHT / 2;
 BEVEL_STEPS = 10;
+
+module blade() {
+    union() {
+        translate([0,0,HEIGHT - BEVEL_HEIGHT])cylinder(h=BEVEL_HEIGHT, r1=BLADE_THICKNESS, r2=0);
+        cylinder(h=HEIGHT - BEVEL_HEIGHT, r1=BLADE_THICKNESS, r2=BLADE_THICKNESS);
+        cylinder(h=RIM_HEIGHT, r1=RIM_WIDTH, r2=RIM_WIDTH);
+    }
+}
 
 module outline() {
     import(file="drawing.dxf");
@@ -47,20 +55,17 @@ module offset_outline(r){
     offset(delta=r, r=r) outline();
 }
 
+EPSILON = 0.01;
+
 module main() {
     difference(){
-        union(){
-            // rim 
-            linear_extrude(RIM_HEIGHT) offset_outline(RIM_WIDTH);
-
-            // blade
-            for(q=[0:1/BEVEL_STEPS:1])
-                linear_extrude(HEIGHT-BEVEL_HEIGHT*q)
-                    offset_outline(BLADE_THICKNESS * q);
+        minkowski(){
+            linear_extrude(EPSILON) outline();
+            blade();
         }
 
         // cut-out interior
-        linear_extrude(HEIGHT) outline();
+        linear_extrude(HEIGHT + EPSILON) outline();
     }
 }
 
