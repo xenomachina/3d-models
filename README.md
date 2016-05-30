@@ -41,8 +41,8 @@ was yellow, and it connects between the escapement's pallet and the pendulum.
 The small rod snapped off of ours, hence this replacement part.
 
 
-STL:
-- [Youmagine](https://www.youmagine.com/designs/diy-clock-my-first-clock-replacement-pendulum-pusher)
+STL is available on
+[Youmagine](https://www.youmagine.com/designs/diy-clock-my-first-clock-replacement-pendulum-pusher).
 
 
 ## [Exercise Machine Tablet Stand](exer-tablet-stand/)
@@ -75,15 +75,19 @@ doesn't slip off. My wife and I have both been using this for months with our
 different tablets, and it works great.
 
 
-## [Miele Dishwasher thingy](miele-dishwasher/)
+## [Miele Dishwasher Thingy](miele-dishwasher/)
 
-This is a replacement part for our Miele dishwasher. The orginal part vanished,
-so I printed one up. ABS or nylon would probably work best in the harsh
-dishwasher environment. I just used PLA, and it did work for a few months, but
-eventually warped (probably due to heat).
+This is a replacement part for our Miele dishwasher. It's a little clip/hinge
+thing that goes in the upper rack.  The orginal part vanished, so I printed
+this up. (There was originally a pair of them, so I was able to measure the
+still remaining one to create this design.)
+
+ABS or nylon would probably work best in the harsh dishwasher environment. I
+just used PLA, and it did work for a few months, but eventually warped
+(probably due to heat).
 
 
-## [monitor arm bridge](monitor-arm-bridge/)
+## [Monitor Arm Bridge](monitor-arm-bridge/)
 
 **NOTE: I haven't actually printed this yet, so it's a completely untested
 design.**
@@ -126,9 +130,9 @@ Features of this design:
 - Provides adequate support for the PS2 so it won't tip over.
 - Matches the look of the PS2.
 
-STL:
-- [Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand)
-- [Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand)
+STL is available on
+[Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand) and
+[Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand).
 
 
 ## [Rack Spacers](rack-spacers/)
