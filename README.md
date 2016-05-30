@@ -9,6 +9,28 @@ license). Links for these are provided below.
 
 I have also included Cura slicing profiles for some of the models here.
 
+## [PlayStation2 Slim Stand](ps2-slim-stand/)
+
+While lying horizontally the PlayStation 2 slim takes up a lot more space than
+it has to. It is designed to also stand vertically (the logo even rotates), but
+it needs a stand to hold it up. All of the stands I could find selling online
+are either designed for a different revision of the PS2 slim than mine (which
+lacks a screw hole) or they cover the vent holes. After my original PS3 cooked
+itself to death I'm a bit paranoid about cooling.
+
+Features of this design:
+
+- Easily printable -- there are absolutely no overhangs.
+- Doesn't use too much material (or printing time).
+- Provides good ventilation.
+- Provides adequate support for the PS2 so it won't tip over.
+- Matches the look of the PS2.
+
+STL is available on
+[Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand) and
+[Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand).
+
+
 ## [Bike License Holder](bike-license-holder/)
 
 This is a frame for holding a small bike-size license plate, like those novelty
@@ -17,32 +39,10 @@ It can be attached to a bike frame with a few cable zip ties. The plate itself
 can be attached with either more zip ties, or with nuts and bolts.
 
 
-## [Cabinet plug](cabinet-plug/)
-
-This is a weird one. I have some cabinets in my home that had a couple of strange
-rectangular openings. These openings weren't easy to see, but ants started
-using them to get into the house. I made these plugs, and then filled the
-openings with "Great Stuff™" expanding foam. (The small round hole in the plugs
-are for the "Great Stuff" nozzle to fit through.) These are almost certainly
-not useful to anyone else unaltered, but the dimensions are all in variables,
-so it's easy to customize.
-
 ## [Cookie cutter](cookie-cutter/)
 
 This is a cookie cutter. You need to have a 2D `drawing.dxf` for the cookie
 cutter shape, and this will create a 3D model of an actual cookie cutter.
-
-
-## ["DIY Clock My First Clock" Replacement Pendulum Pusher](diy-clock/)
-
-My son has a "Do-It-Yourself Clock My First Clock" kit. It fell off a table,
-and one part broke. This is a replacement for that part.  In our kit this part
-was yellow, and it connects between the escapement's pallet and the pendulum.
-The small rod snapped off of ours, hence this replacement part.
-
-
-STL is available on
-[Youmagine](https://www.youmagine.com/designs/diy-clock-my-first-clock-replacement-pendulum-pusher).
 
 
 ## [Exercise Machine Tablet Stand](exer-tablet-stand/)
@@ -74,6 +74,18 @@ upward facing "hooks" to provide some padding and/or friction so your tablet
 doesn't slip off. My wife and I have both been using this for months with our
 different tablets, and it works great.
 
+## [Small Wall Bracket](small-wall-bracket/)
+
+This is a small bracket for wall-mounting things. I used it for mounting a
+Global Caché GC-100 Network Adapter. It would probably also work well for
+things like routers, switches, or Raspberry Pi's in boxy cases.
+
+Two brackets are needed for each device to be wall-mounted. One bracket goes
+above the device, another goes below.  The brackets screw onto the wall, and
+one cable zip tie per bracket is wrapped around the device, passing through the
+slot in the bracket. The device can be removed from the wall by snipping the
+zip ties. (You don't need to unscrew the brackets to remove or repplace the
+device.)
 
 ## [Miele Dishwasher Thingy](miele-dishwasher/)
 
@@ -85,6 +97,18 @@ still remaining one to create this design.)
 ABS or nylon would probably work best in the harsh dishwasher environment. I
 just used PLA, and it did work for a few months, but eventually warped
 (probably due to heat).
+
+
+## ["DIY Clock My First Clock" Replacement Pendulum Pusher](diy-clock/)
+
+My son has a "Do-It-Yourself Clock My First Clock" kit. It fell off a table,
+and one part broke. This is a replacement for that part.  In our kit this part
+was yellow, and it connects between the escapement's pallet and the pendulum.
+The small rod snapped off of ours, hence this replacement part.
+
+
+STL is available on
+[Youmagine](https://www.youmagine.com/designs/diy-clock-my-first-clock-replacement-pendulum-pusher).
 
 
 ## [Monitor Arm Bridge](monitor-arm-bridge/)
@@ -113,28 +137,6 @@ the measurements will most certainly need adjusting for different mounts
 diameters, mount placements, and cable tie widths.
 
 
-## [PlayStation2 Slim Stand](ps2-slim-stand/)
-
-While lying horizontally the PlayStation 2 slim takes up a lot more space than
-it has to. It is designed to also stand vertically (the logo even rotates), but
-it needs a stand to hold it up. All of the stands I could find selling online
-are either designed for a different revision of the PS2 slim than mine (which
-lacks a screw hole) or they cover the vent holes. After my original PS3 cooked
-itself to death I'm a bit paranoid about cooling.
-
-Features of this design:
-
-- Easily printable -- there are absolutely no overhangs.
-- Doesn't use too much material (or printing time).
-- Provides good ventilation.
-- Provides adequate support for the PS2 so it won't tip over.
-- Matches the look of the PS2.
-
-STL is available on
-[Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand) and
-[Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand).
-
-
 ## [Rack Spacers](rack-spacers/)
 
 I have an AV rack (just like a network rack, but for AV equipment). Because of
@@ -145,15 +147,13 @@ are required. I would not recommend using these for anything of substantial
 weight. Like I said, I only use them for cable organizers.
 
 
-## [Small Wall Bracket](small-wall-bracket/)
+## [Cabinet plug](cabinet-plug/)
 
-This is a small bracket for wall-mounting things. I used it for mounting a
-Global Caché GC-100 Network Adapter. It would probably also work well for
-things like routers, switches, or Raspberry Pi's in boxy cases.
+This is a weird one. I have some cabinets in my home that had a couple of strange
+rectangular openings. These openings weren't easy to see, but ants started
+using them to get into the house. I made these plugs, and then filled the
+openings with "Great Stuff™" expanding foam. (The small round hole in the plugs
+are for the "Great Stuff" nozzle to fit through.) These are almost certainly
+not useful to anyone else unaltered, but the dimensions are all in variables,
+so it's easy to customize.
 
-Two brackets are needed for each device to be wall-mounted. One bracket goes
-above the device, another goes below.  The brackets screw onto the wall, and
-one cable zip tie per bracket is wrapped around the device, passing through the
-slot in the bracket. The device can be removed from the wall by snipping the
-zip ties. (You don't need to unscrew the brackets to remove or repplace the
-device.)
