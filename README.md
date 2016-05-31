@@ -41,8 +41,9 @@ can be attached with either more zip ties, or with nuts and bolts.
 
 ## [Cookie cutter](cookie-cutter/)
 
-This is a cookie cutter. You need to have a 2D `drawing.dxf` for the cookie
-cutter shape, and this will create a 3D model of an actual cookie cutter.
+This is a generalized cookie cutter. You need to have a 2D `drawing.dxf` for
+the cookie cutter outline, and this will create a 3D model of an actual cookie
+cutter.
 
 
 ## [Exercise Machine Tablet Stand](exer-tablet-stand/)
