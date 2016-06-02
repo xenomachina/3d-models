@@ -6,11 +6,11 @@
  * Thanks to Kit Wallace for his superellipse implementation.
  */
 
-$fn = 180;
+$fn = 60;
 
 karma_width = 75.5;
 karma_thickness = 13.1;
-karma_edge_thickness = 9.8;
+karma_edge_thickness = 10.3;
 shell_thickness = 2;
 port_r = 7.5;
 
@@ -49,48 +49,89 @@ module karma_go() {
     }
 }
 
+module karma_slot() {
+    // minus slot for Karma Go
+    hull() {
+        karma_go();
+        translate([0, karma_width + shell_thickness, 0]) karma_go();
+    }
+}
+
 module main() {
+    % karma_go();
+
     difference() {
-        // shell
-        intersection() {
-            cube([karma_width + 2*shell_thickness,
-                 karma_width + 2*shell_thickness,
-                 karma_thickness + 2*shell_thickness], center=true);
-            hull()
-                for(z = [0, -karma_thickness])
-                    translate([0, 0, z])
-                        minkowski() {
-                            karma_go();
-                            cylinder(r=shell_thickness/2, h=shell_thickness, center=true);
+        union () {
+            difference () {
+                intersection() {
+                    // shaped shell around slot
+                    minkowski() {
+                        karma_slot();
+                        h = karma_thickness - karma_edge_thickness + 2*shell_thickness;
+                        translate([0,0,shell_thickness-h])cylinder(r=shell_thickness, h=h);
+                    }
+
+                    // trim to bounding box (mostly flattens back)
+                    translate([
+                              -karma_width/2-shell_thickness,
+                              -karma_width/2-shell_thickness,
+                              -karma_thickness/2-shell_thickness])
+                        cube([karma_width + 2*shell_thickness,
+                             karma_width + 2*shell_thickness,
+                             karma_thickness + 2*shell_thickness]);
+                }
+
+                // cut out slot
+                karma_slot();
+
+                translate([0, 0, -karma_thickness/2]) {
+                    // top cutout and finger slot
+                    translate([-karma_width/2 - shell_thickness, -karma_width/2 - shell_thickness, -shell_thickness])
+                        difference() {
+                            cube([karma_width + 2*shell_thickness,
+                                 4* karma_width + 2*shell_thickness,
+                                 karma_thickness + 2*shell_thickness]);
+                            for(x = [0, karma_width + 2 * shell_thickness])
+                                translate([x, karma_width/2, 0])
+                                    hull() for(y = [0, -karma_width])
+                                    translate([0, y, 0])
+                                    cylinder(r=karma_width/4 + shell_thickness/2, h=karma_thickness + 2*shell_thickness);
                         }
-        }
 
-        translate([0, 0, -karma_thickness/2 ]) {
+                }
 
-            // button and port holes
-            for (y = [30, 55])
-                translate([karma_width/2, karma_width / 2 - y, 0])
-                    hull() for (y2 = [-port_r + shell_thickness, port_r - shell_thickness])
-                        translate([0, y2, 0])
-                            cylinder(r=shell_thickness, h=karma_thickness + shell_thickness);
 
-            // top cutout and finger slot
-            translate([-karma_width/2 - shell_thickness, -karma_width/2 - shell_thickness, 0])
-            difference() {
-                cube([karma_width + 2*shell_thickness, karma_width + 2*shell_thickness, karma_thickness + shell_thickness]);
-                for(x = [0, karma_width + 2 * shell_thickness])
-                    translate([x, karma_width/2, 0])
-                        hull() for(y = [0, -karma_width])
-                            translate([0, y, 0])
-                                cylinder(r=karma_width/4 + shell_thickness/2, h=karma_thickness + shell_thickness);
+            }
+
+            // back plate
+            intersection() {
+                hull()
+                    for(z = [0, -karma_thickness])
+                        translate([0, 0, z])
+                            minkowski() {
+                                karma_go();
+                                cylinder(r=shell_thickness, h=shell_thickness);
+                            }
+                translate([
+                          -karma_width/2-shell_thickness,
+                          -karma_width/2-shell_thickness,
+                          -karma_thickness/2-shell_thickness])
+                    cube([
+                         karma_width + 2*shell_thickness,
+                         karma_width + 2*shell_thickness,
+                         shell_thickness]);
             }
         }
 
-        // minus slot for Karma Go
-        hull() {
-            karma_go();
-            translate([0, karma_width + shell_thickness, 0]) karma_go();
-        }
+
+        // button and port holes
+        for (y = [30, 55])
+            translate([karma_width/2, karma_width / 2 - y, -karma_thickness/2 - shell_thickness])
+                hull()
+                for (x2 = [0, shell_thickness])
+                    for (y2 = [-port_r + shell_thickness, port_r - shell_thickness])
+                        translate([x2, y2, 0])
+                            #cylinder(r=shell_thickness, h=karma_thickness + 2*shell_thickness);
     }
 }
 
