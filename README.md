@@ -15,11 +15,14 @@ I have also included Cura slicing profiles for some of the models here.
 <a href="ps2-slim-stand/photo.jpg" ><img alt="Photo" src="ps2-slim-stand/photo.jpg" height=256 align=right></a>
 
 While lying horizontally the PlayStation 2 slim takes up a lot more space than
-it has to. It is designed to also stand vertically (the logo even rotates), but
-it needs a stand to hold it up. All of the stands I could find selling online
-are either designed for a different revision of the PS2 slim than mine (which
-lacks a screw hole) or they cover the vent holes. After my original PS3 cooked
-itself to death I'm a bit paranoid about cooling.
+it has to. The PS2 is designed to also stand vertically (the logo even
+rotates!), but it needs a stand to hold it up.
+
+All of the stands I could find selling online were either designed for a
+different revision of the PS2 slim than mine (which lacks a screw hole) or they
+cover the vent holes or both. After my original PS3 cooked itself to death I'm
+a bit paranoid about cooling, so I wanted a stand that would not only work with
+my PS2, but which would also allow airflow to the bottom vent.
 
 Features of this design:
 
@@ -30,8 +33,10 @@ Features of this design:
 - Matches the look of the PS2.
 
 STL is available on
-[Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand) and
-[Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand).
+[Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand),
+[Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand),
+and
+[Thingiverse](http://www.thingiverse.com/thing:1606616).
 
 ## [Karma Go Holder](karma-go-holder/)
 
