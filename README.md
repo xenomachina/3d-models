@@ -62,6 +62,12 @@ This holder may also work with the FreedomPop Freedom Spot Photon and Clear
 Spot Voyager, as they seem to have the same form-factor, but I have not tested
 either of them with this holder — I've never even seen them in person.
 
+STL is available on
+[Youmagine](https://www.youmagine.com/designs/karma-go-holder),
+[Pinshape](https://pinshape.com/items/22385-3d-printed-karma-go-holder),
+and
+[Thingiverse](http://www.thingiverse.com/thing:1606543).
+
 
 ## [Bike License Plate Holder](bike-license-holder/)
 
