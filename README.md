@@ -32,19 +32,28 @@ STL is available on
 
 ## [Karma Go Holder](karma-go-holder/)
 
-<img align=right alt="render of holder" src="karma-go-holder/render.png">
+<a href="karma-go-holder/render.png"><img alt="render of Karma Go holder" src="karma-go-holder/render.png" height=256 align=left></a>
+<a href="karma-go-holder/photo.jpg" ><img alt="photo of Karma Go holder" src="karma-go-holder/photo.jpg" height=256 align=right></a>
 
-This is a little holder for a Karma Go hotspot. (The FreedomPop Freedom Spot
-Photon and Clear Spot Voyager seem to have the same form-factor, but I have not
-tested them with this holder — I've never even seen them in person.) The device
-slots in and fits snugly. The status lights are visible on top, and the
-charging port and power button are accessible on the side.
+This is a little holder for a [Karma Go
+hotspot](https://yourkarma.com/invite/lauren7892) (full disclosure: that's an
+affiliate link that gives you and me a $10 discount).  The device slots in and
+fits snugly. The status lights are visible on top, and the charging port and
+power button are accessible on the side. The back of the holder is flat, so
+it's easily mountable with double-sided tape.
 
-I use this in our family van, so the kids can watch Netflix during road trips.
-I'd previously tried just using velcro, but the constant vibration meant the
-device would randomly detach itself and roll across the floor. This holder
-should keep it secure while still making it possible to easily remove the
-device when actually desired.
+I use this in our family van, so the kids can watch Netflix during road trips,
+and the hotspot doesn't take up any precious space in the tiny dashboard
+compartment, yet can remain plugged into the charger. I'd previously tried just
+using velcro, but the constant vibration meant the device would randomly detach
+itself and roll across the floor. Kind of scary when it rolls under the brake
+pedal. This holder should keep it secure while still making it possible to
+easily remove the device when actually desired.
+
+This holder may also work with the FreedomPop Freedom Spot Photon and Clear
+Spot Voyager, as they seem to have the same form-factor, but I have not tested
+either of them with this holder — I've never even seen them in person.
+
 
 ## [Bike License Plate Holder](bike-license-holder/)
 
