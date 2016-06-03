@@ -11,6 +11,9 @@ I have also included Cura slicing profiles for some of the models here.
 
 ## [PlayStation2 Slim Stand](ps2-slim-stand/)
 
+<a href="ps2-slim-stand/render.png"><img alt="Render" src="ps2-slim-stand/render.png" height=256 align=left></a>
+<a href="ps2-slim-stand/photo.jpg" ><img alt="Photo" src="ps2-slim-stand/photo.jpg" height=256 align=right></a>
+
 While lying horizontally the PlayStation 2 slim takes up a lot more space than
 it has to. It is designed to also stand vertically (the logo even rotates), but
 it needs a stand to hold it up. All of the stands I could find selling online
@@ -32,8 +35,8 @@ STL is available on
 
 ## [Karma Go Holder](karma-go-holder/)
 
-<a href="karma-go-holder/render.png"><img alt="render of Karma Go holder" src="karma-go-holder/render.png" height=256 align=left></a>
-<a href="karma-go-holder/photo.jpg" ><img alt="photo of Karma Go holder" src="karma-go-holder/photo.jpg" height=256 align=right></a>
+<a href="karma-go-holder/render.png"><img alt="Render" src="karma-go-holder/render.png" height=256 align=left></a>
+<a href="karma-go-holder/photo.jpg" ><img alt="Photo" src="karma-go-holder/photo.jpg" height=256 align=right></a>
 
 This is a little holder for a [Karma Go
 hotspot](https://yourkarma.com/invite/lauren7892) (full disclosure: that's an
