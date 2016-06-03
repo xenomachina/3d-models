@@ -62,6 +62,8 @@ This holder may also work with the FreedomPop Freedom Spot Photon and Clear
 Spot Voyager, as they seem to have the same form-factor, but I have not tested
 either of them with this holder — I've never even seen them in person.
 
+Thanks to Kit Wallace for letting me use his superellipse implementation.
+
 STL is available on
 [Youmagine](https://www.youmagine.com/designs/karma-go-holder),
 [Pinshape](https://pinshape.com/items/22385-3d-printed-karma-go-holder),
