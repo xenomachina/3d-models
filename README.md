@@ -30,8 +30,23 @@ STL is available on
 [Youmagine](https://www.youmagine.com/designs/playstation2-slim-stand) and
 [Pinshape](https://pinshape.com/items/5508-3d-printed-playstation2-slim-stand).
 
+## [Karma Go Holder](karma-go-holder/)
 
-## [Bike License Holder](bike-license-holder/)
+<img align=right alt="render of holder" src="karma-go-holder/render.png">
+
+This is a little holder for a Karma Go hotspot. (The FreedomPop Freedom Spot
+Photon and Clear Spot Voyager seem to have the same form-factor, but I have not
+tested them with this holder — I've never even seen them in person.) The device
+slots in and fits snugly. The status lights are visible on top, and the
+charging port and power button are accessible on the side.
+
+I use this in our family van, so the kids can watch Netflix during road trips.
+I'd previously tried just using velcro, but the constant vibration meant the
+device would randomly detach itself and roll across the floor. This holder
+should keep it secure while still making it possible to easily remove the
+device when actually desired.
+
+## [Bike License Plate Holder](bike-license-holder/)
 
 This is a frame for holding a small bike-size license plate, like those novelty
 personalized "your name here" license plates you often see in souvenir shops.
