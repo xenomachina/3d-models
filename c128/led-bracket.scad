@@ -39,17 +39,18 @@ TAIL_DEPTH = 4.35;
 TAIL_HEIGHT = 2.04;
 
 module main() {
-    union() {
-        cube([BACK_WIDTH, BACK_DEPTH, BACK_HEIGHT]);
-        translate([BACK_WIDTH/2 - TAIL_WIDTH/2, 0, 0])
-            cube([TAIL_WIDTH, TAIL_DEPTH, TAIL_HEIGHT]);
-        translate([0, BACK_DEPTH - ARM_DEPTH, BACK_HEIGHT - ARM_HEIGHT])
-            cube([ARM_WIDTH, ARM_DEPTH, ARM_HEIGHT]);
-        translate([BACK_WIDTH - ARM_WIDTH, BACK_DEPTH - ARM_DEPTH, BACK_HEIGHT - ARM_HEIGHT])
-            cube([ARM_WIDTH, ARM_DEPTH, ARM_HEIGHT]);
-        translate([0, - SEAT_DEPTH, BACK_HEIGHT - SEAT_HEIGHT])
-            cube([BACK_WIDTH, SEAT_DEPTH, SEAT_HEIGHT]);
-    }
+    rotate([0,180,0])
+        union() {
+            cube([BACK_WIDTH, BACK_DEPTH, BACK_HEIGHT]);
+            translate([BACK_WIDTH/2 - TAIL_WIDTH/2, 0, 0])
+                cube([TAIL_WIDTH, TAIL_DEPTH, TAIL_HEIGHT]);
+            translate([0, BACK_DEPTH - ARM_DEPTH, BACK_HEIGHT - ARM_HEIGHT])
+                cube([ARM_WIDTH, ARM_DEPTH, ARM_HEIGHT]);
+            translate([BACK_WIDTH - ARM_WIDTH, BACK_DEPTH - ARM_DEPTH, BACK_HEIGHT - ARM_HEIGHT])
+                cube([ARM_WIDTH, ARM_DEPTH, ARM_HEIGHT]);
+            translate([0, - SEAT_DEPTH, BACK_HEIGHT - SEAT_HEIGHT])
+                cube([BACK_WIDTH, SEAT_DEPTH, SEAT_HEIGHT]);
+        }
 }
 
 main();
