@@ -87,7 +87,11 @@ cutter.
 
 ## [Commodore 128 LED Bracket](c128/)
 
-This is the bracket for the power LED in the Commodore 128.
+This is a replacement bracket for the power LED in the Commodore 128.
+
+STL is available on
+[Thingiverse](http://www.thingiverse.com/thing:1692413).
+
 
 
 ## [Exercise Machine Tablet Stand](exer-tablet-stand/)
