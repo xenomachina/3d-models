@@ -85,6 +85,10 @@ This is a generalized cookie cutter. You need to have a 2D `drawing.dxf` for
 the cookie cutter outline, and this will create a 3D model of an actual cookie
 cutter.
 
+## [Commodore 128 LED Bracket](c128/)
+
+This is the bracket for the power LED in the Commodore 128.
+
 
 ## [Exercise Machine Tablet Stand](exer-tablet-stand/)
 
