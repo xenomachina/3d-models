@@ -109,4 +109,4 @@ module main() {
     }
 }
 
-main();
+rotate([90, 0, 180]) main();
