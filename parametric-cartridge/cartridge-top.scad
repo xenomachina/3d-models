@@ -6,7 +6,6 @@
  * Thanks to Makerboost for their Commodore 64 Cartridge design.
  */
 
-// TODO: fix weirdness in screw hole (bottom)
 // TODO: make compatible with Thingiverse customizer
 
 //HOLE_Y = 43.36;
@@ -33,7 +32,7 @@ module post() {
             hull() {
                 intersection (){
                     original();
-                    cylinder(r=1.7, h=9);
+                    cylinder(r1=1.7, r2=4, h=10);
                 }
             }
         }
@@ -44,7 +43,7 @@ module post() {
 module hole() {
     scale([1, 1, 1 + 2 * EPSILON])
     difference (){
-        cylinder(r1=1.6, r2=4, h=11);
+        cylinder(r1=1.6, r2=4, h=10);
         original();
     }
 }
