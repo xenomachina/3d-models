@@ -15,6 +15,8 @@ TOP = false;
 $fn=36;
 HOLE_DIAMETER = 10;
 
+EPSILON = 1/128;
+
 module original() {
     // This translate moves the center hole to the origin
     if (TOP) {
@@ -40,6 +42,7 @@ module post() {
 }
 
 module hole() {
+    scale([1, 1, 1 + 2 * EPSILON])
     difference (){
         cylinder(r1=1.6, r2=4, h=11);
         original();
@@ -47,19 +50,20 @@ module hole() {
 }
 
 module blank() {
-    module subst() {
-        cube([17, 17, 20], center=true);
+    post_d = 17;
+    module subst(d) {
+        cube([d, d, 20], center=true);
     }
     union() {
-        // remove post
+        // remove post + hole
         difference(){
             original();
-            subst();
+            subst(post_d);
         }
         // replace surface with surface from elsewhere
         intersection(){
-            translate([0,17,0]) original();
-            subst();
+            translate([0,post_d,0]) original();
+            subst(post_d + EPSILON);
         }
     }
 }
@@ -78,8 +82,8 @@ module extended_blank(len) {
         }
 
         // middle
-        translate([0, slice_start, 0])
-        scale([1, (len - normal_len + slice_len) / slice_len, 1])
+        translate([0, slice_start - EPSILON, 0])
+        scale([1, (2 * EPSILON + len - normal_len + slice_len) / slice_len, 1])
         translate([0, -slice_start, 0])
         intersection () {
             translate([-35, slice_start, -3]) cube([70, slice_len, 15]);
@@ -102,8 +106,7 @@ module main() {
                 scale([HOLE_DIAMETER/5, HOLE_DIAMETER/5, 1])
                 post();
         }
-        translate([0, HOLE_Y - 43.36, 0])
-            hole();
+        translate([0, HOLE_Y - 43.36, -EPSILON]) hole();
     }
 }
 
