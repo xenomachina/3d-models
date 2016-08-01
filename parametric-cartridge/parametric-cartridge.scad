@@ -109,4 +109,6 @@ module main() {
     }
 }
 
-rotate([90, 0, 180]) main();
+rotate([90, 0, 180]) // rotate so edge connector is on build-plate
+translate([0, 43.36, 0]) // move dge connector to origin
+main();
