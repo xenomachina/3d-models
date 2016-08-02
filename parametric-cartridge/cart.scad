@@ -21,7 +21,7 @@ post_diameter = 0; // [0 : 15]
 /* [Hidden] */
 
 $fs=1.2;
-$fa=24;
+$fa=10;
 EPSILON = 1/128;
 ORIGINAL_PCB_LEN = 84;
 ORIGINAL_POST_Y = 43.36;
@@ -72,6 +72,7 @@ END_R = 6;
 COUNTERSINK_HEIGHT = (COUNTERSINK_DIAMETER - SCREW_OUTER_DIAMETER) / (SCREW_HEAD_DIAMETER - SCREW_OUTER_DIAMETER) * SCREW_HEAD_HEIGHT;
 
 module hole() {
+    $fn = 36;
     translate([0, 0, -CART_DEPTH/2])
     union() {
         cylinder(r=COUNTERSINK_DIAMETER/2, h=COUNTERSINK_TOP_DEPTH);
@@ -90,6 +91,7 @@ POST_FILLET_R = EDGE_R * 2;
 POST_FLEX_GAP = .2;
 
 module post() {
+    $fn = 36;
     difference() {
     translate([0,0,-POST_HEIGHT/2])
     union() {
