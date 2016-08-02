@@ -20,7 +20,8 @@ post_diameter = 0; // [0 : 15]
 
 /* [Hidden] */
 
-$fn=18;
+$fs=1.2;
+$fa=24;
 EPSILON = 1/128;
 ORIGINAL_PCB_LEN = 84;
 ORIGINAL_POST_Y = 43.36;
@@ -73,12 +74,15 @@ POST_DIAMETER = 5;
 POST_HEIGHT = CART_DEPTH - 2*SKIN;
 LEDGE_DIAMETER = POST_DIAMETER + 1;
 POST_FILLET_R = EDGE_R * 2;
+POST_FLEX_GAP = .2;
 
 module post() {
+    difference() {
     translate([0,0,-POST_HEIGHT/2])
     union() {
         cylinder(r=LEDGE_DIAMETER/2, h=POST_HEIGHT);
 
+        // fillet top and bottom
         for(i=[0,1])
             rotate([0,180*i,0])
             translate([0,0,-POST_HEIGHT*i])
@@ -86,6 +90,12 @@ module post() {
                 cylinder(r=LEDGE_DIAMETER/2 + POST_FILLET_R, h=POST_FILLET_R);
                 translate([0,0,POST_FILLET_R]) torus(LEDGE_DIAMETER/2, POST_FILLET_R);
             }
+    }
+    // This gap helps keep the PCB snug
+    cube([
+         LEDGE_DIAMETER + 2*POST_FILLET_R,
+         LEDGE_DIAMETER + 2*POST_FILLET_R,
+         POST_FLEX_GAP], center=true);
     }
 }
 
