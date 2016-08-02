@@ -132,15 +132,47 @@ EMBOSS_DEPTH = .6;
 
 STRIPE_START = 54;
 STRIPE_WIDTH = 2;
+STRIPE_COUNT = 6;
+
+LABEL_WIDTH = 53.4;
+LABEL_R = STRIPE_WIDTH;
 
 module stripes() {
-    for(i=[0:5])
+    for(i=[0:STRIPE_COUNT-1])
         translate([-CART_WIDTH/2-EPSILON, STRIPE_START + i*STRIPE_WIDTH*2, -CART_DEPTH/2-EPSILON])
             cube([CART_WIDTH + 2*EPSILON, STRIPE_WIDTH, CART_DEPTH + 2*EPSILON]);
 }
 
+module round_rect(r, w, d, h) {
+    union() {
+        for (x=[0,w])
+            for (y=[0,d])
+                translate([x, y, 0]) cylinder(r=r, h=h);
+        translate([-r,0,0]) cube([w + 2*r, d, h]);
+        translate([0,-r,0]) cube([w, d + 2*r, h]);
+    }
+}
+
 module emboss_mask() {
-    stripes();
+    difference() {
+        stripes();
+
+        // label border
+        translate([-LABEL_WIDTH/2+LABEL_R, STRIPE_START + 2* STRIPE_WIDTH + LABEL_R, 0])
+            round_rect(
+                       STRIPE_WIDTH + LABEL_R,
+                       LABEL_WIDTH - 2* LABEL_R,
+                       (STRIPE_COUNT *2 -3) * STRIPE_WIDTH - 2* LABEL_R - 2*STRIPE_WIDTH,
+                       CART_DEPTH);
+    }
+
+    // label indent
+    translate([-LABEL_WIDTH/2+LABEL_R, STRIPE_START + 2* STRIPE_WIDTH + LABEL_R, 0])
+        round_rect(
+                   LABEL_R,
+                   LABEL_WIDTH - 2* LABEL_R,
+                   (STRIPE_COUNT *2 -3) * STRIPE_WIDTH - 2* LABEL_R - 2*STRIPE_WIDTH,
+                   CART_DEPTH);
 }
 
 module box() {
