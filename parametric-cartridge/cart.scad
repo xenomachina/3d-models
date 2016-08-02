@@ -3,7 +3,7 @@
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
 // Which part do you want to see?
-part = "bottom"; // [top:Top,bottom:Bottom]
+part = "top"; // [top:Top,bottom:Bottom]
 
 // Which style case would you like?
 style = "embossed"; // [embossed:Embossed, labeled:Embossed with label hole, smooth:Smooth]
@@ -40,6 +40,19 @@ module torus(r1, r2) {
     rotate_extrude(convexity = 10)
     translate([r2 + r1, 0, 0])
     circle(r=r2);
+}
+
+module partition() {
+    union() {
+        difference(){
+            children(0);
+            children(1);
+        }
+        intersection(){
+            children(1);
+            children(2);
+        }
+    }
 }
 
 HOLE_DEPTH = 18;
@@ -115,6 +128,20 @@ module pcb() {
 WALL_THICKNESS = 1.6;
 CONNECTOR_LENGTH = 10;
 LIP_THICKNESS = 5;
+EMBOSS_DEPTH = .6;
+
+STRIPE_START = 54;
+STRIPE_WIDTH = 2;
+
+module stripes() {
+    for(i=[0:5])
+        translate([-CART_WIDTH/2-EPSILON, STRIPE_START + i*STRIPE_WIDTH*2, -CART_DEPTH/2-EPSILON])
+            cube([CART_WIDTH + 2*EPSILON, STRIPE_WIDTH, CART_DEPTH + 2*EPSILON]);
+}
+
+module emboss_mask() {
+    stripes();
+}
 
 module box() {
     module form() {
@@ -129,14 +156,27 @@ module box() {
                 cylinder(r=END_R - EDGE_R, h=CART_WIDTH - 2 * EDGE_R);
     }
 
+    module shell(r) {
+        minkowski() {
+            form();
+            sphere(r=r);
+        }
+    }
+
     union() {
         // main shell
         difference() {
-            minkowski() {
-                form();
-                sphere(r=EDGE_R);
+            if (style == "embossed") {
+                partition() {
+                    shell(EDGE_R);
+                    emboss_mask();
+                    shell(EDGE_R - EMBOSS_DEPTH);
+                }
+            } else {
+                shell(EDGE_R);
             }
             difference() {
+                // TODO: bevel edges in towards edge connector
                 minkowski() {
                     union() {
                         form();
@@ -166,10 +206,11 @@ module cart() {
         }
         union() {
             translate([0, post_y, 0]) hole();
-            # pcb();
+            pcb(); // TODO #
         }
     }
 }
+
 
 module main() {
     module top_mask() {
