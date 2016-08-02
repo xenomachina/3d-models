@@ -70,15 +70,22 @@ module hole() {
 }
 
 POST_DIAMETER = 5;
-POST_HEIGHT = CART_DEPTH/2 - EDGE_R;
-POST_BASE = POST_HEIGHT * 2 + POST_DIAMETER;
-POST_LEDGE = 1;
-LIP_THICKNESS = 5;
+POST_HEIGHT = CART_DEPTH - 2*SKIN;
+LEDGE_DIAMETER = POST_DIAMETER + 1;
+POST_FILLET_R = EDGE_R * 2;
 
 module post() {
-    difference() {
-        translate([0, 0, -POST_HEIGHT]) cylinder(r=POST_HEIGHT/2 + POST_DIAMETER/2, h=POST_HEIGHT * 2);
-        torus(POST_DIAMETER/2 + POST_LEDGE, POST_HEIGHT);
+    translate([0,0,-POST_HEIGHT/2])
+    union() {
+        cylinder(r=LEDGE_DIAMETER/2, h=POST_HEIGHT);
+
+        for(i=[0,1])
+            rotate([0,180*i,0])
+            translate([0,0,-POST_HEIGHT*i])
+            difference() {
+                cylinder(r=LEDGE_DIAMETER/2 + POST_FILLET_R, h=POST_FILLET_R);
+                translate([0,0,POST_FILLET_R]) torus(LEDGE_DIAMETER/2, POST_FILLET_R);
+            }
     }
 }
 
@@ -97,6 +104,7 @@ module pcb() {
 
 WALL_THICKNESS = 1.6;
 CONNECTOR_LENGTH = 10;
+LIP_THICKNESS = 5;
 
 module box() {
     module form() {
@@ -140,7 +148,6 @@ module box() {
 }
 
 
-//rotate([90, 0, 180]) // rotate so edge connector is on build-plate
 module cart() {
     difference() {
         union() {
@@ -156,9 +163,6 @@ module cart() {
 
 module main() {
     module top_mask() {
-        xl = CART_WIDTH - SKIN;
-        yl = CART_LENGTH - CONNECTOR_LENGTH - WALL_THICKNESS - SKIN/2 - EPSILON;
-        zl = SKIN/2;
         translate([-CART_WIDTH/2-EPSILON, -EPSILON, -EPSILON])
             difference() {
                 cube([CART_WIDTH + 2*EPSILON, CART_LENGTH + 2*EPSILON, CART_DEPTH + 2*EPSILON]);
@@ -166,6 +170,9 @@ module main() {
                 // top/bottom interlock
                 translate([SKIN/2, CONNECTOR_LENGTH + WALL_THICKNESS + EPSILON, 0])
                     difference() {
+                        xl = CART_WIDTH - SKIN;
+                        yl = CART_LENGTH - CONNECTOR_LENGTH - WALL_THICKNESS - SKIN/2 - EPSILON;
+                        zl = SKIN/2;
                         cube([xl, yl, zl]);
                         translate([SKIN/2, 0, -EPSILON]) {
                             cube([xl - SKIN, yl - SKIN/2, zl + 2*EPSILON]);
@@ -186,4 +193,5 @@ module main() {
     }
 }
 
+//rotate([90, 0, 180]) // rotate so edge connector is on build-plate
 main();
