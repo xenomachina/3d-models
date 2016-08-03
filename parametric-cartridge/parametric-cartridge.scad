@@ -2,7 +2,6 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
-// TODO: delete unused junk
 // TODO: fix up naming convention for arguments
 // TODO: rename files
 // TODO: add heat set insert support
@@ -40,10 +39,6 @@ ORIGINAL_POST_DIA = 5;
 // post_y = 17.17 +.5 * 9;
 // pcb_len = 64;
 // post_diameter = 9
-
-module z(z) {
-    translate([0, 0, z]) children();
-}
 
 module frustum(x, y, z, x2, y2) {
     linear_extrude(height=z, scale=[x2/x, y2/y]) {
@@ -104,7 +99,7 @@ module hole() {
     translate([0, 0, -CART_DEPTH/2])
     union() {
         cylinder(r=COUNTERSINK_DIAMETER/2, h=COUNTERSINK_TOP_DEPTH);
-        z(COUNTERSINK_TOP_DEPTH) {
+        translate([0, 0, COUNTERSINK_TOP_DEPTH]) {
             cylinder(r1=COUNTERSINK_DIAMETER/2, r2=SCREW_OUTER_DIAMETER/2, h=COUNTERSINK_HEIGHT);
         }
         cylinder(r=SCREW_OUTER_DIAMETER/2, h=CART_DEPTH/2);
