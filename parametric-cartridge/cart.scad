@@ -2,8 +2,16 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
+// TODO: make it possible to have hole label
+// TODO: add back length customization
+// TODO: reconnect Thingiverse params
+// TODO: delete unused junk
+// TODO: fix up naming convention for arguments
+// TODO: rename files
+// TODO: add heat set insert support
+
 // Which part do you want to see?
-part = "top"; // [top:Top,bottom:Bottom]
+part = "both"; // [top:Top,bottom:Bottom,both:Both]
 
 // Which style case would you like?
 style = "embossed"; // [embossed:Embossed, labeled:Embossed with label hole, smooth:Smooth]
@@ -36,10 +44,24 @@ module z(z) {
     translate([0, 0, z]) children();
 }
 
+module frustum(x, y, z, x2, y2) {
+    linear_extrude(height=z, scale=[x2/x, y2/y]) {
+        square([x, y], center=true);
+    }
+}
+
 module torus(r1, r2) {
     rotate_extrude(convexity = 10)
     translate([r2 + r1, 0, 0])
     circle(r=r2);
+}
+
+module round_cylinder(fillet, r, h) {
+    for(z=[fillet, h-fillet])
+        translate([0,0,z])
+            torus(r-2*fillet, fillet);
+    cylinder(r=r-fillet, h);
+    translate([0,0,fillet]) cylinder(r=r, h=h-2*fillet);
 }
 
 module partition() {
@@ -129,14 +151,13 @@ module pcb() {
 
 WALL_THICKNESS = 1.6;
 CONNECTOR_LENGTH = 10;
-LIP_THICKNESS = 5;
 EMBOSS_DEPTH = .6;
 
-STRIPE_START = 54;
+STRIPE_START = 53;
 STRIPE_WIDTH = 2;
 STRIPE_COUNT = 6;
 
-LABEL_WIDTH = 53.4;
+LABEL_WIDTH = 54.5;
 LABEL_R = STRIPE_WIDTH;
 
 module stripes() {
@@ -155,6 +176,16 @@ module round_rect(r, w, d, h) {
     }
 }
 
+module label(y=0, h=CART_DEPTH) {
+    // label indent
+    translate([-LABEL_WIDTH/2+LABEL_R, STRIPE_START + 2* STRIPE_WIDTH + LABEL_R, y])
+        round_rect(
+                   LABEL_R,
+                   LABEL_WIDTH - 2* LABEL_R,
+                   (STRIPE_COUNT *2 -3) * STRIPE_WIDTH - 2* LABEL_R - 2*STRIPE_WIDTH,
+                   h);
+}
+
 module emboss_mask() {
     difference() {
         stripes();
@@ -167,67 +198,88 @@ module emboss_mask() {
                        (STRIPE_COUNT *2 -3) * STRIPE_WIDTH - 2* LABEL_R - 2*STRIPE_WIDTH,
                        CART_DEPTH);
     }
-
-    // label indent
-    translate([-LABEL_WIDTH/2+LABEL_R, STRIPE_START + 2* STRIPE_WIDTH + LABEL_R, 0])
-        round_rect(
-                   LABEL_R,
-                   LABEL_WIDTH - 2* LABEL_R,
-                   (STRIPE_COUNT *2 -3) * STRIPE_WIDTH - 2* LABEL_R - 2*STRIPE_WIDTH,
-                   CART_DEPTH);
+    label();
 }
 
-module box() {
-    module form() {
-        translate([-CART_WIDTH/2 + EDGE_R, EDGE_R, -CART_DEPTH/2 + EDGE_R]) {
-            cube([CART_WIDTH - 2 * EDGE_R, CART_LENGTH - END_R - EDGE_R, CART_DEPTH - 2 * EDGE_R]);
-            translate([0, 0, END_R - EDGE_R])
-                cube([CART_WIDTH - 2 * EDGE_R, CART_LENGTH - 2 * EDGE_R, CART_DEPTH - 2 * END_R]);
-        }
-        for (z=[1,-1])
-            translate([-CART_WIDTH/2 + EDGE_R, CART_LENGTH - END_R, z*(-CART_DEPTH/2 + END_R)])
+module shell(inset) {
+    $fn=36;
+    translate([-CART_WIDTH/2, CART_LENGTH-END_R, 0])
+    union() {
+        // curved edges at end
+        for(z=[-1, 1])
+            translate([inset,0,z*(CART_DEPTH/2-END_R)])
                 rotate([0, 90, 0])
-                cylinder(r=END_R - EDGE_R, h=CART_WIDTH - 2 * EDGE_R);
-    }
+                round_cylinder(EDGE_R-inset, END_R-inset, CART_WIDTH-2*inset);
 
-    module shell(r) {
-        minkowski() {
-            form();
-            sphere(r=r);
-        }
-    }
+        for(x=[0,CART_WIDTH-2*EDGE_R])
+            // curved end side edges
+            translate([x+EDGE_R, END_R-EDGE_R, -CART_DEPTH/2+END_R]) {
+                rotate([0,0,90]) // line up faces
+                    cylinder(r=EDGE_R-inset, h=CART_DEPTH-END_R*2);
 
+                // all 4 long edges
+                for(z=[0,1])
+                    translate([0, -END_R+EDGE_R, z*(CART_DEPTH - 2 * EDGE_R)-END_R+EDGE_R])
+                        rotate([90,90+z*90,0])
+                        cylinder(r=EDGE_R-inset, h=CART_LENGTH-END_R-inset);
+            }
+
+        // top and bottom face
+        translate([EDGE_R, inset-CART_LENGTH+END_R, -CART_DEPTH/2+inset])
+            cube([CART_WIDTH-2*(EDGE_R), CART_LENGTH-END_R-inset, CART_DEPTH-2*inset]);
+
+        // side face to end
+        translate([inset, inset-CART_LENGTH+END_R, -CART_DEPTH/2+END_R])
+            cube([CART_WIDTH-2*inset, CART_LENGTH-EDGE_R-inset, CART_DEPTH-2*END_R]);
+
+        // side face to edges
+        translate([inset, inset+END_R-CART_LENGTH, -CART_DEPTH/2+EDGE_R])
+            cube([CART_WIDTH-2*inset, CART_LENGTH-END_R-inset, CART_DEPTH-2*EDGE_R]);
+
+        // end face
+        translate([EDGE_R, inset-CART_LENGTH+END_R, -CART_DEPTH/2+END_R])
+            cube([CART_WIDTH-2*EDGE_R, CART_LENGTH-2*inset, CART_DEPTH-2*END_R]);
+    }
+}
+
+CONNECTOR_MAX_WIDTH = 66.5;
+CONNECTOR_MAX_HEIGHT = 15;
+CONNECTOR_MIN_WIDTH = 64.1;
+CONNECTOR_MIN_HEIGHT = 12.9;
+
+module box() {
     union() {
         // main shell
         difference() {
             if (style == "embossed") {
                 partition() {
-                    shell(EDGE_R);
+                    shell(0);
                     emboss_mask();
-                    shell(EDGE_R - EMBOSS_DEPTH);
+                    shell(EMBOSS_DEPTH);
                 }
             } else {
-                shell(EDGE_R);
+                shell(0);
             }
-            difference() {
-                // TODO: bevel edges in towards edge connector
-                minkowski() {
-                    union() {
-                        form();
-                        translate([0, -EDGE_R, 0]) form();
-                    }
-                    sphere(r=EDGE_R - SKIN);
-                }
-                // top lip
-                translate([-CART_WIDTH/2, 0, CART_DEPTH/2 - LIP_THICKNESS])
-                    cube([CART_WIDTH, EDGE_R, LIP_THICKNESS]);
+            union() {
+                difference() {
+                    shell(SKIN);
 
-                // edge connector wall
-                translate([-CART_WIDTH/2, CONNECTOR_LENGTH, -CART_DEPTH/2])
-                    cube([CART_WIDTH, WALL_THICKNESS, CART_DEPTH]);
+                    // edge connector wall
+                    translate([-CART_WIDTH/2, CONNECTOR_LENGTH, -CART_DEPTH/2])
+                        cube([CART_WIDTH, WALL_THICKNESS, CART_DEPTH]);
+                }
+
+                // bevelled opening
+                translate([0, -EPSILON, -PCB_THICKNESS/2])
+                    rotate([270, 0, 0])
+                    frustum(
+                            CONNECTOR_MAX_WIDTH,
+                            CONNECTOR_MAX_HEIGHT,
+                            SKIN + 2*EPSILON,
+                            CONNECTOR_MIN_WIDTH,
+                            CONNECTOR_MIN_HEIGHT);
             }
         }
-
     }
 }
 
@@ -240,13 +292,13 @@ module cart() {
         }
         union() {
             translate([0, post_y, 0]) hole();
-            pcb(); // TODO #
+            # pcb();
         }
     }
 }
 
 
-module main() {
+module half(top) {
     module top_mask() {
         translate([-CART_WIDTH/2-EPSILON, -EPSILON, -EPSILON])
             difference() {
@@ -257,19 +309,20 @@ module main() {
                     difference() {
                         xl = CART_WIDTH - SKIN;
                         yl = CART_LENGTH - CONNECTOR_LENGTH - WALL_THICKNESS - SKIN/2 - EPSILON;
-                        zl = SKIN/2;
+                        zl = SKIN;
                         cube([xl, yl, zl]);
-                        translate([SKIN/2, 0, -EPSILON]) {
-                            cube([xl - SKIN, yl - SKIN/2, zl + 2*EPSILON]);
+                        translate([SKIN/2+1, -1, -1]) {
+                            cube([xl - SKIN-2*1, yl - SKIN/2-1, zl + 2*1]);
                         }
                     }
             }
     }
-    if (part == "top") {
+    if (top) {
         intersection() {
             cart();
             top_mask();
         }
+
     } else {
         difference() {
             cart();
@@ -278,5 +331,27 @@ module main() {
     }
 }
 
-//rotate([90, 0, 180]) // rotate so edge connector is on build-plate
+module main() {
+    rotate([90, 0, 180]) // rotate so edge connector is on build-plate
+    if (part == "top") {
+        half(true);
+    } else if (part == "bottom") {
+        half(false);
+    } else {
+        // both
+        half(true);
+        translate([0, 0, -12])
+            half(false);
+    }
+}
+
+
+module mockup() {
+    color([0.2,0.2,0.2,1])
+    cart();
+
+    color([.8,.8,.85,1])
+    label(y=CART_DEPTH/2 - EMBOSS_DEPTH, h=EMBOSS_DEPTH);
+}
+
 main();
