@@ -2,7 +2,6 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
-// TODO: reconnect Thingiverse params
 // TODO: delete unused junk
 // TODO: fix up naming convention for arguments
 // TODO: rename files
@@ -25,13 +24,14 @@ pcb_len = 84; // [50: 200]
 post_y = 43.36; // [20: 180]
 
 // Size of the post hole in PCB. Use 0 to remove post and hole entirely.
-post_diameter = 0; // [0 : 15]
+post_diameter = 5; // [0 : 15]
 
 /* [Hidden] */
 
 $fs=1.2;
 $fa=10;
 EPSILON = 1/128;
+
 ORIGINAL_PCB_LEN = 84;
 ORIGINAL_POST_Y = 43.36;
 ORIGINAL_POST_DIA = 5;
@@ -112,9 +112,8 @@ module hole() {
     }
 }
 
-POST_DIAMETER = 5;
 POST_HEIGHT = CART_DEPTH - 2*SKIN;
-LEDGE_DIAMETER = POST_DIAMETER + 1;
+LEDGE_DIAMETER = post_diameter + 1;
 POST_FILLET_R = EDGE_R * 2;
 POST_FLEX_GAP = .2;
 
@@ -146,8 +145,11 @@ module pcb() {
     difference() {
         translate([-PCB_WIDTH / 2, 0, -PCB_THICKNESS])
             cube([PCB_WIDTH, pcb_len, PCB_THICKNESS]);
-        translate([0, post_y, -PCB_THICKNESS-EPSILON])
-            cylinder(r=POST_DIAMETER/2, h=PCB_THICKNESS + 2* EPSILON);
+        if (post_diameter > 0) {
+            translate([0, post_y, -PCB_THICKNESS-EPSILON])
+                // - .25 is to give a little bit of tolerance
+                cylinder(r=post_diameter/2 - .25, h=PCB_THICKNESS + 2* EPSILON);
+        }
     }
 }
 
@@ -289,11 +291,15 @@ module box() {
 module cart() {
     difference() {
         union() {
-            translate([0, post_y, 0]) post();
+            if (post_diameter > 0) {
+                translate([0, post_y, 0]) post();
+            }
             box();
         }
         union() {
-            translate([0, post_y, 0]) hole();
+            if (post_diameter > 0) {
+                translate([0, post_y, 0]) hole();
+            }
             # pcb();
         }
     }
