@@ -2,7 +2,6 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
-// TODO: make it possible to have hole label
 // TODO: add back length customization
 // TODO: reconnect Thingiverse params
 // TODO: delete unused junk
@@ -13,8 +12,11 @@
 // Which part do you want to see?
 part = "both"; // [top:Top,bottom:Bottom,both:Both]
 
-// Which style case would you like?
-style = "embossed"; // [embossed:Embossed, labeled:Embossed with label hole, smooth:Smooth]
+// Would you like embossed stripes?
+embossed = 1; // [1:Embossed, 0:Smooth]
+
+// Would you like a hole punched out for the label?
+label_hole = 0; // [0:No, 1:Yes]
 
 // Length of PCB (including edge connector). Use 84 to get a normal-length
 // cartridge.
@@ -251,7 +253,7 @@ module box() {
     union() {
         // main shell
         difference() {
-            if (style == "embossed") {
+            if (embossed) {
                 partition() {
                     shell(0);
                     emboss_mask();
@@ -318,9 +320,14 @@ module half(top) {
             }
     }
     if (top) {
-        intersection() {
-            cart();
-            top_mask();
+        difference() {
+            intersection() {
+                cart();
+                top_mask();
+            }
+            if (label_hole) {
+                label();
+            }
         }
 
     } else {
