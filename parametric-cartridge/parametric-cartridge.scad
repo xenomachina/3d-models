@@ -2,8 +2,6 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
-// TODO: fix up naming convention for arguments
-// TODO: rename files
 // TODO: add heat set insert support
 
 // Which part do you want to see?
