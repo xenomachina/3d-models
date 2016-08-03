@@ -2,7 +2,6 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
-// TODO: add back length customization
 // TODO: reconnect Thingiverse params
 // TODO: delete unused junk
 // TODO: fix up naming convention for arguments
@@ -86,7 +85,12 @@ SCREW_HEAD_DIAMETER = 4.93;
 SCREW_OUTER_DIAMETER = 2.5;
 SCREW_INNER_DIAMETER = 2.3;
 SCREW_HEAD_HEIGHT = 1.67;
+
+PCB_WIDTH = 58.12;
+
 CART_DEPTH = 20;
+CART_WIDTH = 68.38;
+CART_LENGTH = pcb_len + 4.5;
 
 PCB_THICKNESS = 1.5748;
 SKIN = 2;
@@ -138,10 +142,6 @@ module post() {
     }
 }
 
-PCB_WIDTH = 58.12;
-CART_WIDTH = 68.38;
-CART_LENGTH = 88.5;
-
 module pcb() {
     difference() {
         translate([-PCB_WIDTH / 2, 0, -PCB_THICKNESS])
@@ -155,7 +155,7 @@ WALL_THICKNESS = 1.6;
 CONNECTOR_LENGTH = 10;
 EMBOSS_DEPTH = .6;
 
-STRIPE_START = 53;
+STRIPE_START = CART_LENGTH - 35.5;
 STRIPE_WIDTH = 2;
 STRIPE_COUNT = 6;
 
