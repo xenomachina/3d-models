@@ -4,23 +4,26 @@
 
 // TODO: add heat set insert support
 
-// Which part do you want to see?
-part = "both"; // [top:Top,bottom:Bottom,both:Both]
+// preview[view:north west, tilt:top diagonal]
 
-// Would you like embossed stripes?
-embossed = 1; // [1:Embossed, 0:Smooth]
+// Which part do you want to see? Note that Customizer's preview may time out if you choose "both".
+part = "top"; // [top:Top,bottom:Bottom,both:Both]
+
+/* [Appearance] */
+// Would you like debossed stripes?
+debossed_stripes = 1; // [1:Yes, 0:No]
 
 // Would you like a hole punched out for the label?
-label_hole = 0; // [0:No, 1:Yes]
+label_hole = 0; // [1:Yes, 0:No]
 
-// Length of PCB (including edge connector). Use 84 to get a normal-length
-// cartridge.
-pcb_len = 84; // [50: 200]
+/* [Internals] */
+// Length of PCB (including edge connector). Adjusting this also ajusts the overall length of the case accordingly. Defaults to length used by standard Commodore cartridges.
+PCB_length = 84; // [50: 200]
 
-// Distance between edge connector and center of post + screw hole. 43.36 is for standard Commodore cartridges.
-post_y = 43.36; // [20: 180]
+// Distance between edge connector and *center* of post + screw-hole. Defaults to correct distance for standard Commodore cartridges.
+post_y = 43.36; // [20.00: 180.00]
 
-// Size of the post hole in PCB. Use 0 to remove post and hole entirely.
+// Size of the post hole in PCB. Use 0 to remove post and screw-hole entirely.
 post_diameter = 5; // [0 : 15]
 
 /* [Hidden] */
@@ -34,8 +37,8 @@ ORIGINAL_POST_Y = 43.36;
 ORIGINAL_POST_DIA = 5;
 
 // Good values for Gyruss (Parker Brothers) cart:
-// post_y = 17.17 +.5 * 9;
-// pcb_len = 64;
+// post_y = 21.67
+// PCB_length = 64;
 // post_diameter = 9
 
 module frustum(x, y, z, x2, y2) {
@@ -83,7 +86,7 @@ PCB_WIDTH = 58.12;
 
 CART_DEPTH = 20;
 CART_WIDTH = 68.38;
-CART_LENGTH = pcb_len + 4.5;
+CART_LENGTH = PCB_length + 4.5;
 
 PCB_THICKNESS = 1.5748;
 SKIN = 2;
@@ -137,7 +140,7 @@ module post() {
 module pcb() {
     difference() {
         translate([-PCB_WIDTH / 2, 0, -PCB_THICKNESS])
-            cube([PCB_WIDTH, pcb_len, PCB_THICKNESS]);
+            cube([PCB_WIDTH, PCB_length, PCB_THICKNESS]);
         if (post_diameter > 0) {
             translate([0, post_y, -PCB_THICKNESS-EPSILON])
                 // - .25 is to give a little bit of tolerance
@@ -148,7 +151,7 @@ module pcb() {
 
 WALL_THICKNESS = 1.6;
 CONNECTOR_LENGTH = 10;
-EMBOSS_DEPTH = .6;
+DEBOSS_DEPTH = .6;
 
 STRIPE_START = CART_LENGTH - 35.5;
 STRIPE_WIDTH = 2;
@@ -183,7 +186,7 @@ module label(y=0, h=CART_DEPTH) {
                    h);
 }
 
-module emboss_mask() {
+module deboss_mask() {
     difference() {
         stripes();
 
@@ -248,11 +251,11 @@ module box() {
     union() {
         // main shell
         difference() {
-            if (embossed) {
+            if (debossed_stripes) {
                 partition() {
                     shell(0);
-                    emboss_mask();
-                    shell(EMBOSS_DEPTH);
+                    deboss_mask();
+                    shell(DEBOSS_DEPTH);
                 }
             } else {
                 shell(0);
@@ -293,7 +296,7 @@ module cart() {
             if (post_diameter > 0) {
                 translate([0, post_y, 0]) hole();
             }
-            # pcb();
+            pcb();
         }
     }
 }
@@ -357,7 +360,7 @@ module mockup() {
     cart();
 
     color([.8,.8,.85,1])
-    label(y=CART_DEPTH/2 - EMBOSS_DEPTH, h=EMBOSS_DEPTH);
+    label(y=CART_DEPTH/2 - DEBOSS_DEPTH, h=DEBOSS_DEPTH);
 }
 
 main();
