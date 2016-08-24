@@ -6,8 +6,6 @@
 // TODO: improve screw holes
 // TODO: add heat set insert support
 
-// preview[view:north west, tilt:top diagonal]
-
 // Which part do you want to see? Note that Customizer's preview may time out if you choose "both".
 part = "top"; // [top:Top,bottom:Bottom,both:Both]
 
