@@ -2,6 +2,8 @@
 //
 // Code licensed under the Creative Commons - Attribution - Share Alike license.
 
+// TODO: Fix port so it's smooth
+// TODO: improve screw holes
 // TODO: add heat set insert support
 
 // preview[view:north west, tilt:top diagonal]
@@ -341,7 +343,7 @@ module half(top) {
 }
 
 module main() {
-    rotate([90, 0, 180]) // rotate so edge connector is on build-plate
+    rotate([90, 0, 0]) // rotate so edge connector is on build-plate
     if (part == "top") {
         half(true);
     } else if (part == "bottom") {
