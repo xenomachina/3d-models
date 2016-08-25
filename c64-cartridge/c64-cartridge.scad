@@ -5,6 +5,9 @@
 // TODO: Fix port so it's smooth
 // TODO: improve screw holes
 // TODO: add heat set insert support
+// TODO: add parametric hole support
+// TODO: add side-bulge support (eg: REU)
+// TODO: add top-bulge support (eg: 1541 Ultimate)
 
 // Which part do you want to see? Note that Customizer's preview may time out if you choose "both".
 part = "top"; // [top:Top,bottom:Bottom,both:Both]
@@ -15,6 +18,9 @@ debossed_stripes = 1; // [1:Yes, 0:No]
 
 // Would you like a hole punched out for the label?
 label_hole = 0; // [1:Yes, 0:No]
+
+// Add feet to support the back end of the cartridge? These are useful for longer or heavier cartridges.
+add_feet = 0; // [1:Yes, 0:No]
 
 /* [Internals] */
 // Length of PCB (including edge connector). Adjusting this also ajusts the overall length of the case accordingly. Defaults to length used by standard Commodore cartridges.
@@ -156,6 +162,7 @@ DEBOSS_DEPTH = .6;
 STRIPE_START = CART_LENGTH - 35.5;
 STRIPE_WIDTH = 2;
 STRIPE_COUNT = 6;
+STRIPE_END = STRIPE_START + (STRIPE_COUNT * 2 - 1) * STRIPE_WIDTH;
 
 LABEL_WIDTH = 54.5;
 LABEL_R = STRIPE_WIDTH;
@@ -283,12 +290,39 @@ module box() {
     }
 }
 
+FOOT_DEPTH = 7.6;
+FOOT_R = FOOT_DEPTH/2;
+
+module foot() {
+    module foot_ball() {
+        rotate([0, 90, 0]) // align poles with x-axis
+            sphere(r=FOOT_R);
+    }
+    hull() {
+        foot_ball();
+        translate([0, 0, FOOT_DEPTH]) foot_ball();
+        translate([0, -FOOT_DEPTH, FOOT_DEPTH]) foot_ball();
+    }
+}
 
 module cart() {
     difference() {
         union() {
             if (post_diameter > 0) {
                 translate([0, post_y, 0]) post();
+            }
+            if (add_feet) {
+                difference() {
+                    for(i=[-1,1])
+                        translate([i * (CART_WIDTH/2 - EDGE_R - FOOT_R -
+                        STRIPE_WIDTH),
+                                  STRIPE_END - STRIPE_WIDTH - FOOT_R,
+                                  -CART_DEPTH/2 - FOOT_DEPTH + FOOT_R])
+                            foot();
+
+                    translate([-CART_WIDTH/2, 0, -CART_DEPTH/2 + SKIN - EPSILON])
+                        cube([CART_WIDTH, CART_LENGTH, CART_DEPTH/2]);
+                }
             }
             box();
         }
