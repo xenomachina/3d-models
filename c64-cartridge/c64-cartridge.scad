@@ -8,11 +8,12 @@
 // TODO: add parametric hole support
 // TODO: add side-bulge support (eg: REU)
 // TODO: add top-bulge support (eg: 1541 Ultimate)
+// TODO: add optional shield-holes (like on 1750 REU)?
 
 // Which part do you want to see? Note that Customizer's preview may time out if you choose "both".
 part = "top"; // [top:Top,bottom:Bottom,both:Both]
 
-/* [Appearance] */
+/* [Externals] */
 // Would you like debossed stripes?
 debossed_stripes = 1; // [1:Yes, 0:No]
 
@@ -27,10 +28,10 @@ add_feet = 0; // [1:Yes, 0:No]
 PCB_length = 84; // [50: 200]
 
 // Distance between edge connector and *center* of post + screw-hole. Defaults to correct distance for standard Commodore cartridges.
-post_y = 43.36; // [20.00: 180.00]
+post_y = 43.36;
 
 // Size of the post hole in PCB. Use 0 to remove post and screw-hole entirely.
-post_diameter = 5; // [0 : 15]
+post_diameter = 5;
 
 /* [Hidden] */
 
