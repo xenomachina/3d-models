@@ -22,16 +22,10 @@
 // Turns a (dxf) 2D outline into a cookie cutter. The model is intentionally
 // "upside-down", as this completely eliminates overhangs, making for a really
 // easy print.
+//
+// See README.md for detailed instructions on using this.
 
-// To create a dxf file with Inkscape that works in OpenSCAD:
-// - create a closed path
-// - go to Extensions / Modify Path / Flatten Beziers..., adjust settings and
-//   apply
-// - select all nodes with the node tool and "Make selected segments lines"
-// - Save as filetype "Desktop cutting plotter (AutoCAD DXF R14) (*.dxf)" and
-//   enable "us LWPOLYLINE"
-
-$fn=36;
+$fn=12;
 
 // Full height of cookie cutter.
 HEIGHT = 10;
@@ -44,8 +38,15 @@ RIM_WIDTH = 10;
 BLADE_THICKNESS = 2;
 
 // The bevel is what makes the blade sharp(ish).
-BEVEL_HEIGHT = HEIGHT / 2;
+BEVEL_HEIGHT = (HEIGHT - RIM_HEIGHT) * .9;
 BEVEL_STEPS = 10;
+
+DXF_FILE = "drawing.dxf";
+
+// This is to work around https://bugs.launchpad.net/inkscape/+bug/1643383
+// Create a 100mm square, export as dxf, and then reimport into Inkscape.
+// Record the new size (in mm) here:
+INKSCAPE_BUG_1643383 = 106.371;
 
 module blade() {
     union() {
@@ -56,11 +57,8 @@ module blade() {
 }
 
 module outline() {
-    mirror() import(file="drawing.dxf");
-}
-
-module offset_outline(r){
-    offset(delta=r, r=r) outline();
+    scale(100/INKSCAPE_BUG_1643383)
+    mirror() import(file=DXF_FILE);
 }
 
 EPSILON = 0.01;

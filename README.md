@@ -85,6 +85,56 @@ This is a generalized cookie cutter. You need to have a 2D `drawing.dxf` for
 the cookie cutter outline, and this will create a 3D model of an actual cookie
 cutter.
 
+A fun project to do with kids is to have them draw shapes and then convert them
+into cookie cutters. Here's how I've done this:
+
+1. Scan outline drawings of cookie cutter shapes. Clean, high-contrast images
+   work best (like black marker on white paper). I then scan as line-art on a
+   flatbed scanner.
+2. Import the image into Inkscape.
+3. Tell Inkscape to trace the image (Path → Trace Bitmap...). I've gotten good
+   results with `Color quantization` mode, with `Colors` set to 2.
+4. When you trace a bitmap in Inkscape it doesn't replace the original image
+   object. Still in Inkscape, delete the Image object (not the "Path" object).
+   The status bar at the bottom will say what kind of object is currently
+   selected. You may need to drag the path aside to easily get to the image.
+5. Select the path object, and  break it apart (`Path → Break Apart`). This
+   will turn it into a bunch of separat Path objects.
+6. Delete all paths except the ones you want to be your cookie cutters.  For
+   outlined drawings, you'll end up with two paths: one for the inside, and one
+   for the outside.  Keep whichever you prefer.  Once you've done this, `Edit →
+   Select All` should show the correct number in the status bar. eg: "3 object
+   selected of type Path". If this number is higher than it should be, then
+   you've probably got some speckles that turned into tiny paths. Find them and
+   delete them.
+7. With the paths still selected, simplify them. (`Path → Simplify`) This will
+   reduce the number of nodes significantly, which will greatly speed up
+   OpenSCAD's processing.
+8. OpenSCAD doesn't understand curves, only line segments. With the paths still
+   selected, flatten the curves. (`Extensions → Modify Path → Flatten
+   Beziers...`) I've found a "flattness" setting of 2.0 works fine.
+9. Export the drawing as a DXF file. (`File → Save a Copy...`, and then select
+   "Desktop Cutting Plotter (AutoCAD DXF ...) (\*.dxf)" as the file type and
+   save as `drawing.dxf`.
+10. On the options dialog that appears after you click `Save`:
+    - Set base unit to mm.
+    - Disable `use ROBO-Master`.
+    - Enable `use LWPOLYLINE`.
+    - Set other options as appropriate (defaults are probably fine).
+
+This sounds like a lot, but is actually pretty quick. You then render
+`cookie-cutter.scad` in OpenSCAD to create your cookie cutter models.
+
+Look in the [`cookie-cutter/examples/`](cookie-cutter/examples/) directory for
+some example of cookie cutters I've made like this (most with my kids).
+
+NOTE: There is currently [a bug in Inkscape where it exports DXF files with the
+wrong scale](https://bugs.launchpad.net/inkscape/+bug/1643383). To compensate for
+this you can export a 100mm square and reimport it.  Look at the new size, and
+then adjust the value of INKSCAPE_BUG_1643383 cookie-cutter.scad to the new
+size that you see.
+
+
 ## [Commodore 128 LED Bracket](c128/)
 
 This is a replacement bracket for the power LED in the Commodore 128.
