@@ -27,10 +27,10 @@ add_feet = 0; // [1:Yes, 0:No]
 // Length of PCB (including edge connector). Adjusting this also ajusts the overall length of the case accordingly. Defaults to length used by standard Commodore cartridges.
 PCB_length = 84; // [50: 200]
 
-// Distance between edge connector and *center* of post + screw-hole. Defaults to correct distance for standard Commodore cartridges.
+// Distance between edge connector and *center* of post + screw-hole, in mm. Defaults to correct distance for standard Commodore cartridges.
 post_y = 43.36;
 
-// Size of the post hole in PCB. Use 0 to remove post and screw-hole entirely.
+// Diameter of the PCB's post hole, in mm. Use 0 to remove post and screw-hole entirely.
 post_diameter = 5;
 
 /* [Hidden] */
