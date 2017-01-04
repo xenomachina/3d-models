@@ -38,6 +38,26 @@ STL is available on
 and
 [Thingiverse](http://www.thingiverse.com/thing:1606616).
 
+## [Customizable Commodore 64 Cartridge](c64-cartridge/)
+
+<a href="c64-cartridge/photo.png"><img alt="Photo" src="karma-go-holder/photo.jpg" height=256 align=right></a>
+
+Have an old Commodore 64 cartridge that lost its case? Have a new Commodore 64 cartridge that never had a case?
+
+This is a 2-part cartridge case that closely mimics the design and measurements of the cartridges Commodore made for the 64 in the early 80s. This design is Customizer enabled, so you can modify it in a number of ways:
+
+- remove debossed stripes
+- punch out label hole entirely
+- adjust length of cart based on PCB length
+- adjust position and size of PCB mounting hole, or remove it entirely
+- add support feet to the back (good for longer/heavier cartridges)
+
+If you have other ideas for other customization parameters, feel free to contact me and I'll see what I can do.
+
+STLs available on
+[Thingiverse](http://www.thingiverse.com/thing:1702546) ([Customizer Enabled!](http://www.thingiverse.com/apps/customizer/run?thing_id=1702546)).
+
+
 ## [Karma Go Holder](karma-go-holder/)
 
 <a href="karma-go-holder/render.png"><img alt="Render" src="karma-go-holder/render.png" height=256 align=left></a>
