@@ -91,6 +91,23 @@ and
 [Thingiverse](http://www.thingiverse.com/thing:1606543).
 
 
+## [Snowflake Card Stand](snowflake/)
+
+<center>
+<a href="snowflake/render.png"><img alt="Render" src="snowflake/render.png" height=256></a>
+<a href="snowflake/photo1.jpg" ><img alt="Photo" src="snowflake/photo1.jpg" height=256></a>
+<a href="snowflake/photo2.jpg" ><img alt="Photo with card" src="snowflake/photo2.jpg" height=256></a>
+</center>
+
+It seems non-folding (ie: opsotcard-style) greeting cards are becoming
+increasingly popular. We wanted a way to display the cards we receive on a flat
+surface, but non-folding cards won't stand up on their own. These little stands
+fix that, and are decorated with a procedurally generated snowflake, so each
+card's stand can be as unique as a... I think you know where this is going.
+
+To be honest I'm not 100% happy with the snowflake generation code, though some
+random seeds look pretty nice.
+
 ## [Bike License Plate Holder](bike-license-holder/)
 
 This is a frame for holding a small bike-size license plate, like those novelty
