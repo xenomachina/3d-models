@@ -40,7 +40,7 @@ and
 
 ## [Customizable Commodore 64 Cartridge](c64-cartridge/)
 
-<a href="c64-cartridge/photo.png"><img alt="Photo" src="karma-go-holder/photo.jpg" height=256 align=right></a>
+<a href="c64-cartridge/photo.jpg"><img alt="Photo" src="c64-cartridge/photo.jpg" height=256 align=right></a>
 
 Have an old Commodore 64 cartridge that lost its case? Have a new Commodore 64 cartridge that never had a case?
 
