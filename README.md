@@ -99,10 +99,12 @@ and
 <a href="snowflake/photo2.jpg" ><img alt="Photo with card" src="snowflake/photo2.jpg" height=256></a>
 </center>
 
-It seems non-folding (ie: opsotcard-style) greeting cards are becoming
-increasingly popular. We wanted a way to display the cards we receive on a flat
-surface, but non-folding cards won't stand up on their own. These little stands
-fix that, and are decorated with a procedurally generated snowflake, so each
+It seems flat (non-folding, postcard-style) greeting cards are becoming
+increasingly popular. We wanted a way to display the cards we receive on a
+table top, but non-folding cards won't stand up on their own. This little stand
+fixes that.
+
+It's also decorated with a procedurally generated snowflake, so each
 card's stand can be as unique as a... I think you know where this is going.
 
 To be honest I'm not 100% happy with the snowflake generation code, though some
