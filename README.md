@@ -295,3 +295,13 @@ are for the "Great Stuff" nozzle to fit through.) These are almost certainly
 not useful to anyone else unaltered, but the dimensions are all in variables,
 so it's easy to customize.
 
+## [Tinker Crate Automaton crankshaft](tinkercrate-automaton/)
+
+My son had a [Tinker Crate](http://www.kiwicrate.com/tinker) automaton. He
+really loved building it, playing with it, and showing it off to his friends.
+One day the crankshaft broke. The crankshaft is laser-cut plywood, and quite
+skinny where it broke. We don't have a laser cutter, but I do have a 3D
+printer, so we designed this replacement by scanning the original on a flatbed
+scanner and then drawing on top of the scna in
+[Inkscape](https://inkscape.org/). The result is pretty much identical to the
+original, except plastic (we used PLA/PHA), and works great.
