@@ -90,6 +90,25 @@ STL is available on
 and
 [Thingiverse](http://www.thingiverse.com/thing:1606543).
 
+## [Commodore 64GS Keyboard Case](c64gs-keyboard-case/)
+
+<a href="c64gs-keyboard-case/render.png"><img alt="Render" src="c64gs-keyboard-case/render.png" height=256 align=left></a>
+
+This is a case for a Commodore 64 keyboard in the style of the Commodore 64GS
+case. It was inspired by [this thread on
+Twitter](https://twitter.com/laurence/status/1304610746358095872).
+
+Please note:
+
+1. I have never printed this. While I have tried to make the measurements
+   accurate, it may not actually fit a Commodore 64 keyboard.
+2. It is *very* large.
+3. There currently is not a hole for cables in the design.
+
+The case is in two pieces, and there are screw posts for mounting a C64
+keyboard inside. It should also work with C16 and *some* VIC-20 keyboards. I
+have seen at least one VIC-20 keyboard that may not fit. If your keyboard will
+fit in a 64C case, it should fit here.
 
 ## [Snowflake Card Stand](snowflake/)
 
