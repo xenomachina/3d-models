@@ -22,7 +22,6 @@
 // TODO: add hole for cable
 // TODO: add some sort of "keying" between top and bottom halves, so that they
 // don't slide around if screws are missing
-// TODO: add reinforcements to top posts
 // TODO: angle key cutouts on bottom edges by about 11°
 
 
@@ -106,6 +105,13 @@ module cutout() {
 module post() {
     // top post
     cylinder(r = SKIN + SCREW_HOLE_R, h = HEIGHT);
+
+    // reinforcement
+    // the z on this translation is a bit of a hack, but it gets us above the
+    // center seam
+    translate([-SKIN/2, 0, KEYBASE_DIMENSIONS[2]+FLANGE_DIMENSIONS[2]-HEIGHT/2])
+        cube([SKIN, DEPTH, HEIGHT]);
+
     // bottom post
     scale([1, 1, -1])
         cylinder(r = SCREW_HEAD_WIDTH/2 + SKIN, h = HEIGHT);
@@ -151,7 +157,7 @@ module place_posts() {
         translate([x, FLANGE_DIMENSIONS[1] - SCREW_Y_EDGE_OFFSET, 0]) union() children();
     }
     for (x = SCREW_BOTTOM_X_OFFSETS) {
-        translate([x, SCREW_Y_EDGE_OFFSET, 0]) union() children();
+        translate([x, SCREW_Y_EDGE_OFFSET, 0]) union() scale([1, -1, 1]) children();
     }
 }
 
@@ -174,12 +180,16 @@ module case() {
             }
         }
 
-        translate([0, 0, SKIN]) bounds(SKIN) octo(WIDTH, DEPTH, HEIGHT - SKIN*2, OCT);
+        translate([0, 0, SKIN]) bounds(SKIN) octo(WIDTH-SKIN*2, DEPTH-SKIN*2, HEIGHT - SKIN*2, OCT);
     }
 }
 module top_region() {
     union() {
+        // top half
         translate([-SKIN, -SKIN, HEIGHT/2]) cube([WIDTH+2*SKIN, DEPTH+2*SKIN, HEIGHT]);
+
+        // include anything above keyboard's bottom (particulary the flanges)
+        // as being in the top region.
         translate(KEYBASE_TRANSLATION)
             translate([0, 0, EPSILON])
             cube([FLANGE_DIMENSIONS[0], FLANGE_DIMENSIONS[1], HEIGHT]);
