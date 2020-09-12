@@ -24,7 +24,6 @@
 // don't slide around if screws are missing
 // TODO: add reinforcements to top posts
 // TODO: angle key cutouts on bottom edges by about 11°
-// TODO: add badge indent
 
 
 FLANGE_DIMENSIONS = [385, 126, 2.2];
@@ -64,6 +63,11 @@ SCREW_HOLE_R = 4.65/2;
 SCREW_HEAD_HEIGHT = 2.5;
 SCREW_HEAD_WIDTH = 7.5;
 
+BADGE_WIDTH = 77;
+BADGE_HEIGHT = 12;
+BADGE_Y_OFFSET = 17;
+BADGE_DEPTH = .4;
+
 module cutout() {
     union() {
         cube(FLANGE_DIMENSIONS);
@@ -86,8 +90,15 @@ module cutout() {
                 translate([KEY_CUTOUT_SPACE_OFFSET, KEY_CUTOUT_ROW_HEIGHT*4, 0])
                     cube([KEY_CUTOUT_SPACE_WIDTH, KEY_CUTOUT_ROW_HEIGHT, KEY_CUTOUT_HEIGHT]);
                 // function keys
-                translate([KEY_CUTOUT_ROW_3_OFFSET + KEY_CUTOUT_MAIN_WIDTH + KEY_CUTOUT_FKEY_GAP, 0, 0])
+                fkey_x = KEY_CUTOUT_ROW_3_OFFSET + KEY_CUTOUT_MAIN_WIDTH + KEY_CUTOUT_FKEY_GAP;
+                translate([fkey_x, 0, 0])
                     cube([KEY_CUTOUT_FKEY_WIDTH, KEY_CUTOUT_ROW_HEIGHT * 4, KEY_CUTOUT_HEIGHT]);
+
+                // badge
+                translate([fkey_x + KEY_CUTOUT_FKEY_WIDTH - BADGE_WIDTH,
+                    KEY_CUTOUT_ROW_HEIGHT * 4 + BADGE_Y_OFFSET,
+                    SKIN-BADGE_DEPTH])
+                    cube([BADGE_WIDTH, BADGE_HEIGHT, HEIGHT]);
             }
     }
 }
