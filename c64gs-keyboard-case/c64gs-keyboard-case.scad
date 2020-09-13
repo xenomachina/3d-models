@@ -24,7 +24,6 @@
 // don't slide around if screws are missing
 // TODO: angle key cutouts on bottom edges by about 11°
 
-
 FLANGE_DIMENSIONS = [385, 126, 2.2];
 NEAR_FLANGE_OFFSET = 13;
 KEYBASE_DIMENSIONS = [385, 101, 21];
@@ -51,6 +50,10 @@ BOTTOM_POST_HEIGHT = 2 * SKIN;
 WIDTH = KEYBASE_DIMENSIONS[0] + KEY_CUTOUT_FKEY_GAP + 2*OCT + 4*SKIN;
 DEPTH = FLANGE_DIMENSIONS[1] + 2*OCT + 2*SKIN;
 HEIGHT = KEYBASE_DIMENSIONS[2] + SKIN + BOTTOM_POST_HEIGHT;
+
+echo("WIDTH= ", WIDTH);
+echo("HEIGHT=", HEIGHT);
+echo("DEPTH= ", DEPTH);
 
 SCREW_Y_EDGE_OFFSET = 6; // same distance from top and bottom edges of flange
 SCREW_TOP_X_OFFSETS =    [34.5, 97.5, 142, 243, 287, 351];
@@ -197,14 +200,26 @@ module top_region() {
 }
 
 module main() {
+    //top
     intersection() {
         case();
         top_region();
     }
+
+    //bottom
     translate([0, 0, -.25])
     difference() {
         case();
         top_region();
+    }
+}
+
+// test chunk of right side. Good enough for verifying key cutout placement
+module test_right() {
+    difference() {
+        main();
+        translate([-SKIN, -SKIN, -SKIN])
+        cube([WIDTH - 90+ 4*EPSILON, DEPTH+ 4*EPSILON, HEIGHT+ SKIN]);
     }
 }
 
