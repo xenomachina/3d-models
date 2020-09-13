@@ -37,8 +37,8 @@ KEY_CUTOUT_SPACE_OFFSET = 52;
 KEY_CUTOUT_SPACE_WIDTH = 173;
 KEY_CUTOUT_FKEY_WIDTH = 30.44;
 KEY_CUTOUT_FKEY_GAP = 21; // on top row
-KEY_CUTOUT_X_OFFSET = 1.6;
-KEY_CUTOUT_Y_OFFSET = 1; // between "top" row and keybase top
+KEY_CUTOUT_X_OFFSET = 2.1;
+KEY_CUTOUT_Y_OFFSET = 2.5; // between "top" row and keybase top
 KEY_CUTOUT_HEIGHT = 20; // tall enough for key clearance
 
 FKEY_EXTRA = 22; // that weird extra gap to the right of the f-keys
@@ -78,7 +78,7 @@ module cutout() {
 
         translate([
                   KEY_CUTOUT_X_OFFSET,
-                  NEAR_FLANGE_OFFSET + KEYBASE_DIMENSIONS[1],
+                  NEAR_FLANGE_OFFSET + KEYBASE_DIMENSIONS[1] - KEY_CUTOUT_Y_OFFSET,
                   KEYBASE_DIMENSIONS[2]])
             // flip y-axis
             scale([1,-1,1]) {
