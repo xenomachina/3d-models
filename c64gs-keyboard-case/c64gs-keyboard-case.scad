@@ -77,7 +77,23 @@ PORT_WIDTH =
     + SCREW_TOP_X_OFFSETS[0]
     // and this brings it back to the endge of the screw's post
     - SCREW_Y_EDGE_OFFSET - SKIN;
-echo("port opening= ", PORT_WIDTH - 2*SKIN);
+echo("(external) PORT_WIDTH = ", PORT_WIDTH - 2*SKIN);
+
+PORT_OFFSET = 0; // left aligned
+
+// Some other options for the rear port:
+//
+//     PORT_OFFSET = (WIDTH - 2*OCT -PORT_WIDTH)/2; // actually centered
+//
+// Note that the posts are not centered, and so you run into them faster than
+// you might think.
+//
+// To maximize the width, do something like:
+//
+//     PORT_WIDTH = 90;
+//     PORT_OFFSET = (WIDTH - 2*OCT -2*SKIN - KEYBASE_DIMENSIONS[0]/2) - PORT_WIDTH/2; // sorta centered
+//
+// This centers between the posts, so it'll be slightly right of center.
 
 module cutout() {
     union() {
@@ -185,7 +201,7 @@ module case() {
             union() {
                 translate([0, 0, SKIN]) skin(SKIN) difference() {
                     octo(WIDTH-SKIN*2, DEPTH-SKIN*2, HEIGHT - SKIN*2, OCT);
-                    translate([OCT, DEPTH - OCT - 2*SKIN + EPSILON, -SKIN])
+                    translate([PORT_OFFSET + OCT, DEPTH - OCT - 2*SKIN + EPSILON, -SKIN])
                         cube([
                             PORT_WIDTH,
                             OCT,
@@ -195,7 +211,7 @@ module case() {
                 translate(KEYBASE_TRANSLATION) place_posts() post();
 
                 // block above ports to act as printing supprt
-                translate([OCT, DEPTH - OCT - 2*SKIN , HEIGHT - OCT - 1.5 * SKIN]) {
+                translate([PORT_OFFSET + OCT, DEPTH - OCT - 2*SKIN , HEIGHT - OCT - 1.5 * SKIN]) {
                     cube([PORT_WIDTH, OCT, HEIGHT]);
                     translate([0, 0, -SKIN]) cube([PORT_WIDTH, SKIN, HEIGHT]);
                 }
