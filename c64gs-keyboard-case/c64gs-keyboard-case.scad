@@ -19,7 +19,6 @@
  *   USA
  */
 
-// TODO: add hole for cable
 // TODO: add some sort of "keying" between top and bottom halves, so that they
 // don't slide around if screws are missing
 // TODO: angle key cutouts on bottom edges by about 11°
@@ -70,6 +69,15 @@ BADGE_HEIGHT = 12;
 BADGE_Y_OFFSET = (FLANGE_DIMENSIONS[1] - NEAR_FLANGE_OFFSET -
     KEY_CUTOUT_Y_OFFSET - KEY_CUTOUT_ROW_HEIGHT * 4 - BADGE_HEIGHT) /2 + SKIN;
 BADGE_DEPTH = .8;
+
+PORT_WIDTH =
+    // this brings it right up to the flange corner
+    WIDTH - KEYBASE_DIMENSIONS[0] - 2*OCT 
+    // and this brings it to the center of the first screw
+    + SCREW_TOP_X_OFFSETS[0]
+    // and this brings it back to the endge of the screw's post
+    - SCREW_Y_EDGE_OFFSET - SKIN;
+echo("port opening= ", PORT_WIDTH - 2*SKIN);
 
 module cutout() {
     union() {
@@ -175,8 +183,22 @@ module case() {
     intersection () {
         difference() {
             union() {
-                translate([0, 0, SKIN]) skin(SKIN) octo(WIDTH-SKIN*2, DEPTH-SKIN*2, HEIGHT - SKIN*2, OCT);
+                translate([0, 0, SKIN]) skin(SKIN) difference() {
+                    octo(WIDTH-SKIN*2, DEPTH-SKIN*2, HEIGHT - SKIN*2, OCT);
+                    translate([OCT, DEPTH - OCT - 2*SKIN + EPSILON, -SKIN])
+                        cube([
+                            PORT_WIDTH,
+                            OCT,
+                            HEIGHT - OCT - SKIN]);
+
+                }
                 translate(KEYBASE_TRANSLATION) place_posts() post();
+
+                // block above ports to act as printing supprt
+                translate([OCT, DEPTH - OCT - 2*SKIN , HEIGHT - OCT - 1.5 * SKIN]) {
+                    cube([PORT_WIDTH, OCT, HEIGHT]);
+                    translate([0, 0, -SKIN]) cube([PORT_WIDTH, SKIN, HEIGHT]);
+                }
             }
             union() {
                 translate(KEYBASE_TRANSLATION) cutout();
@@ -195,8 +217,8 @@ module top_region() {
         // include anything above keyboard's bottom (particulary the flanges)
         // as being in the top region.
         translate(KEYBASE_TRANSLATION)
-            translate([0, 0, EPSILON])
-            cube([FLANGE_DIMENSIONS[0], FLANGE_DIMENSIONS[1], HEIGHT]);
+            translate([0, EPSILON, EPSILON])
+            cube([FLANGE_DIMENSIONS[0], FLANGE_DIMENSIONS[1] - 2*EPSILON, HEIGHT]);
     }
 }
 

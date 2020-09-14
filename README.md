@@ -92,7 +92,13 @@ and
 
 ## [Commodore 64GS Keyboard Case](c64gs-keyboard-case/)
 
-<a href="c64gs-keyboard-case/render.png"><img alt="Render" src="c64gs-keyboard-case/render.png" height=256 align=left></a>
+<center>
+<a href="c64gs-keyboard-case/render.png"><img alt="Render" src="c64gs-keyboard-case/render.png" width=45%></a>
+<a href="c64gs-keyboard-case/render-back.png"><img alt="Render" src="c64gs-keyboard-case/render-back.png" width=45%></a>
+<br />
+<a href="c64gs-keyboard-case/render-bottom.png"><img alt="Render" src="c64gs-keyboard-case/render-bottom.png" width=45%></a>
+<a href="c64gs-keyboard-case/render-top.png"><img alt="Render" src="c64gs-keyboard-case/render-top.png" width=45%></a>
+</center>
 
 This is a case for a Commodore 64 keyboard in the style of the Commodore 64GS
 case. It was inspired by [this thread on
@@ -102,8 +108,12 @@ Please note:
 
 1. I have never printed this. While I have tried to make the measurements
    accurate, it may not actually fit a Commodore 64 keyboard.
-2. It is *very* large.
-3. There currently is not a hole for cables in the design.
+
+2. It is *very* large. It's 432mm wide.
+
+3. There currently is not a hole for cables in the design, though there is a
+   flat "notch" wher it should be pretty easy to add a hole for a port or a slot for
+   cables. This notch is about 51mm wide.
 
 The case is in two pieces, and there are screw posts for mounting a C64
 keyboard inside. It should also work with C16 and *some* VIC-20 keyboards. I
