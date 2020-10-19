@@ -23,6 +23,9 @@
 // don't slide around if screws are missing
 // TODO: angle key cutouts on bottom edges by about 11°
 
+DO_RENDER_TOP = true;
+DO_RENDER_BOTTOM = true;
+
 FLANGE_DIMENSIONS = [385, 126, 2.2];
 NEAR_FLANGE_OFFSET = 13;
 KEYBASE_DIMENSIONS = [385, 101, 21];
@@ -77,23 +80,27 @@ PORT_WIDTH =
     + SCREW_TOP_X_OFFSETS[0]
     // and this brings it back to the endge of the screw's post
     - SCREW_Y_EDGE_OFFSET - SKIN;
+
+PORT_POS="left";
+
+PORT_OFFSET =
+    (PORT_POS == "left")
+    ? 0
+    : (
+        (PORT_POS == "center")
+        // Note that the posts are not centered, and so you run into them faster than
+        // you might think.
+        ? (WIDTH - 2*OCT -PORT_WIDTH)/2
+        : (
+            (PORT_POS == "max")
+            // This centers between the posts, so it'll be slightly right of center.
+            // Recommended PORT_WIDTH = 90
+            ? (WIDTH - 2*OCT -2*SKIN - KEYBASE_DIMENSIONS[0]/2) - PORT_WIDTH/2
+            : "error"
+        )
+    );
+echo("PORT_POS = ", PORT_POS);
 echo("(external) PORT_WIDTH = ", PORT_WIDTH - 2*SKIN);
-
-PORT_OFFSET = 0; // left aligned
-
-// Some other options for the rear port:
-//
-//     PORT_OFFSET = (WIDTH - 2*OCT -PORT_WIDTH)/2; // actually centered
-//
-// Note that the posts are not centered, and so you run into them faster than
-// you might think.
-//
-// To maximize the width, do something like:
-//
-//     PORT_WIDTH = 90;
-//     PORT_OFFSET = (WIDTH - 2*OCT -2*SKIN - KEYBASE_DIMENSIONS[0]/2) - PORT_WIDTH/2; // sorta centered
-//
-// This centers between the posts, so it'll be slightly right of center.
 
 module cutout() {
     union() {
@@ -239,17 +246,20 @@ module top_region() {
 }
 
 module main() {
-    //top
-    intersection() {
-        case();
-        top_region();
+    if (DO_RENDER_TOP) {
+        rotate([DO_RENDER_BOTTOM ? 0 : 180, 0, 0])
+        intersection() {
+            case();
+            top_region();
+        }
     }
 
-    //bottom
-    translate([0, 0, -.25])
-    difference() {
-        case();
-        top_region();
+    if (DO_RENDER_BOTTOM) {
+        translate([0, 0, -.25])
+        difference() {
+            case();
+            top_region();
+        }
     }
 }
 
